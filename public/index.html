@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Danny Agent helps you find quality homes, apartments, land and commercial properties in Freetown, Sierra Leone."
+    >
+
+    <title>Danny Agent | Find Your Perfect Property in Freetown</title>
+    <meta property="og:title" content="Danny Agent | Find Your Perfect Property">
+    <meta property="og:description" content="Homes, apartments, land and commercial properties in Freetown, Sierra Leone.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta name="theme-color" content="#123B63">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+
+
+<body class="bg-white text-gray-900">
+    <noscript>
+        <div class="bg-amber-100 text-amber-900 text-sm text-center px-4 py-3">
+            JavaScript is turned off, so property listings and forms cannot load.
+            Please turn it on, or contact us: %%CONTACT_LINKS%%
+        </div>
+    </noscript>
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header
+        class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100"
+    >
+
+        <div
+            class="max-w-7xl mx-auto px-6 lg:px-8"
+        >
+
+            <div
+                class="flex items-center justify-between h-20"
+            >
+
+<!-- Logo -->
+
+<a
+                    href="index.html"
+                    class="flex items-center gap-3"
+                >
+
+                    <div
+                        class="w-11 h-11 rounded-xl bg-navy flex items-center justify-center text-white"
+                    >
+                        <i
+                            data-lucide="home"
+                            class="w-6 h-6"
+                        ></i>
+                    </div>
+
+                    <div>
+
+                        <span class="block text-xl font-bold text-navy" data-site="businessName">Danny Agent</span>
+
+                        <p
+                            class="text-xs text-gray-500"
+                        >
+                            Your Property. Your Future.
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Desktop Navigation -->
+
+                <nav
+                    class="hidden lg:flex items-center gap-8"
+                    aria-label="Main"
+                >
+                    <a href="index.html" class="text-sm font-medium text-navy hover:text-gold transition" aria-current="page">Home</a>
+                    <a href="properties.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Properties</a>
+                    <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">About Us</a>
+                    <a href="#services" class="text-sm font-medium text-gray-600 hover:text-navy transition">Services</a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-navy transition inline-flex items-center gap-2">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                        Favorites
+                        <span data-favorites-count class="min-w-5 h-5 px-1 rounded-full bg-gold text-darknavy text-xs font-bold inline-flex items-center justify-center">0</span>
+                    </a>
+                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Contact</a>
+                </nav>
+
+
+                <!-- Desktop Button -->
+
+                <a
+                    href="contact.html"
+                    class="hidden lg:inline-flex items-center gap-2 bg-navy text-white px-5 py-3 rounded-lg text-sm font-semibold hover:bg-darknavy transition"
+                >
+
+                    <i
+                        data-lucide="phone"
+                        class="w-4 h-4"
+                    ></i>
+
+                    Contact Us
+
+                </a>
+
+
+                <!-- Mobile Menu Button -->
+
+                <button
+                    id="menuButton"
+                    class="lg:hidden p-2 text-navy"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="mobileMenu"
+                >
+
+                    <i
+                        data-lucide="menu"
+                        class="w-6 h-6"
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mobile Navigation -->
+
+        <div
+            id="mobileMenu"
+            class="hidden lg:hidden border-t border-gray-100 bg-white"
+        >
+
+            <nav
+                class="px-6 py-5 space-y-4"
+                aria-label="Mobile"
+            >
+                <a href="index.html" class="block text-gray-700 font-medium">Home</a>
+                <a href="properties.html" class="block text-gray-700 font-medium">Properties</a>
+                <a href="about.html" class="block text-gray-700 font-medium">About Us</a>
+                <a href="#services" class="block text-gray-700 font-medium">Services</a>
+                <a href="favorites.html" class="block text-gray-700 font-medium">Favorites <span data-favorites-count class="ml-1 min-w-5 h-5 px-1 rounded-full bg-gold text-darknavy text-xs font-bold inline-flex items-center justify-center">0</span></a>
+                <a href="contact.html" class="block text-gray-700 font-medium">Contact</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         HERO SECTION
+    ========================================== -->
+
+    <main>
+
+        <section
+            id="home"
+            class="relative min-h-screen flex items-center pt-20 overflow-hidden"
+        >
+
+            <!-- Background -->
+
+            <div
+                class="absolute inset-0 bg-gradient-to-br from-navy via-[#174A78] to-darknavy"
+            ></div>
+
+
+            <!-- Decorative shapes -->
+
+            <div
+                class="absolute -top-20 -right-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl"
+            ></div>
+
+            <div
+                class="absolute bottom-0 -left-20 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl"
+            ></div>
+
+
+            <div
+                class="relative max-w-7xl mx-auto px-6 lg:px-8 w-full"
+            >
+
+                <div
+                    class="grid lg:grid-cols-2 gap-14 items-center"
+                >
+
+                    <!-- Hero Content -->
+
+                    <div class="text-white">
+
+                        <div
+                            class="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full text-sm mb-6"
+                        >
+
+                            <span
+                                class="w-2 h-2 bg-gold rounded-full"
+                            ></span>
+
+                            Trusted Property Solutions
+
+                        </div>
+
+
+                        <h1
+                            class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
+                        >
+
+                            Find a Place
+                            <span class="text-gold">
+                                You'll Love
+                            </span>
+                            to Call Home.
+
+                        </h1>
+
+
+                        <p
+                            class="mt-6 text-lg text-blue-100 max-w-xl leading-relaxed"
+                        >
+                            Discover quality homes, apartments,
+                            land and commercial properties with <span data-site="businessName">Danny Agent</span>. We make property
+                            search simple, transparent and stress-free.
+                        </p>
+
+
+                        <div
+                            class="flex flex-wrap gap-4 mt-8"
+                        >
+
+                            <a
+                                href="#properties"
+                                class="inline-flex items-center gap-2 bg-gold text-darknavy px-6 py-3.5 rounded-lg font-bold hover:bg-yellow-400 transition"
+                            >
+
+                                Explore Properties
+
+                                <i
+                                    data-lucide="arrow-right"
+                                    class="w-5 h-5"
+                                ></i>
+
+                            </a>
+
+
+                            <a
+                                href="#contact"
+                                class="inline-flex items-center gap-2 border border-white/30 px-6 py-3.5 rounded-lg font-semibold hover:bg-white/10 transition"
+                            >
+
+                                Talk to an Agent
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Search Card -->
+
+                    <div
+                        class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8"
+                    >
+
+                        <div class="mb-6">
+
+                            <h3
+                                class="text-2xl font-bold text-navy"
+                            >
+                                Find Your Property
+                            </h3>
+
+                            <p
+                                class="text-gray-500 mt-1"
+                            >
+                                Search homes and properties that match your needs.
+                            </p>
+
+                        </div>
+
+
+                        <form
+                            id="searchForm"
+                            class="space-y-5"
+                        >
+
+                            <!-- Purpose -->
+
+                            <div>
+
+                                <label for="propertyPurpose"
+                                    class="block text-sm font-semibold text-gray-700 mb-2"
+                                >
+                                    Looking For
+                                </label>
+
+                                <select
+                                    id="propertyPurpose"
+                                    class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                >
+
+                                    <option value="">
+                                        Any
+                                    </option>
+
+                                    <option value="buy">
+                                        Buy
+                                    </option>
+
+                                    <option value="rent">
+                                        Rent
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Property Type -->
+
+                            <div>
+
+                                <label for="propertyType"
+                                    class="block text-sm font-semibold text-gray-700 mb-2"
+                                >
+                                    Property Type
+                                </label>
+
+                                <select
+                                    id="propertyType"
+                                    class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                >
+
+                                    <option value="">
+                                        Any Property
+                                    </option>
+
+                                    <option value="house">
+                                        House
+                                    </option>
+
+                                    <option value="apartment">
+                                        Apartment
+                                    </option>
+
+                                    <option value="land">
+                                        Land
+                                    </option>
+
+                                    <option value="commercial">
+                                        Commercial
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Location -->
+
+                            <div>
+
+                                <label for="locationInput"
+                                    class="block text-sm font-semibold text-gray-700 mb-2"
+                                >
+                                    Location
+                                </label>
+
+                                <div
+                                    class="relative"
+                                >
+
+                                    <i
+                                        data-lucide="map-pin"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                                    ></i>
+
+                                    <input
+                                        id="locationInput"
+                                        type="text"
+                                        placeholder="Enter location"
+                                        class="w-full border border-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Search Button -->
+
+                            <button
+                                type="submit"
+                                class="w-full bg-navy text-white py-3.5 rounded-lg font-semibold hover:bg-darknavy transition flex items-center justify-center gap-2"
+                            >
+
+                                <i
+                                    data-lucide="search"
+                                    class="w-5 h-5"
+                                ></i>
+
+                                Search Properties
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             TRUST BAR
+        ========================================== -->
+
+        <section
+            class="bg-gray-50 border-b border-gray-100"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8 py-8"
+            >
+
+                <div
+                    class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
+                >
+
+                    <div>
+
+                        <i
+                            data-lucide="shield-check"
+                            class="w-7 h-7 text-gold mx-auto"
+                        ></i>
+
+                        <p
+                            class="font-semibold text-navy mt-2"
+                        >
+                            Trusted Agents
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <i
+                            data-lucide="badge-check"
+                            class="w-7 h-7 text-gold mx-auto"
+                        ></i>
+
+                        <p
+                            class="font-semibold text-navy mt-2"
+                        >
+                            Verified Listings
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <i
+                            data-lucide="headphones"
+                            class="w-7 h-7 text-gold mx-auto"
+                        ></i>
+
+                        <p
+                            class="font-semibold text-navy mt-2"
+                        >
+                            Expert Support
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <i
+                            data-lucide="handshake"
+                            class="w-7 h-7 text-gold mx-auto"
+                        ></i>
+
+                        <p
+                            class="font-semibold text-navy mt-2"
+                        >
+                            Hassle-Free Deals
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             FEATURED PROPERTIES
+        ========================================== -->
+
+        <section
+            id="properties"
+            class="py-24"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
+                >
+
+                    <div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm"
+                        >
+                            Featured Properties
+                        </p>
+
+                        <h2
+                            class="text-3xl md:text-4xl font-bold text-navy mt-3"
+                        >
+                            Explore Our Latest Listings
+                        </h2>
+
+                        <p
+                            class="text-gray-600 mt-4 max-w-2xl"
+                        >
+                            Discover properties selected for comfort,
+                            location, value and investment potential.
+                        </p>
+
+                    </div>
+
+
+                    <a href="properties.html" class="inline-flex items-center gap-2 text-navy font-semibold hover:text-gold transition">
+
+                        View All Properties
+
+                        <i
+                            data-lucide="arrow-right"
+                            class="w-5 h-5"
+                        ></i>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Property Grid -->
+
+                <div
+                    id="propertyGrid"
+                    class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                ><noscript>%%NOSCRIPT_LISTINGS%%</noscript></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             ABOUT
+        ========================================== -->
+
+        <section
+            id="about"
+            class="py-24 bg-gray-50"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="grid lg:grid-cols-2 gap-14 items-center"
+                >
+
+                    <!-- Visual -->
+
+                    <div
+                        class="relative"
+                    >
+
+                        <div
+                            class="bg-navy rounded-3xl h-[500px] overflow-hidden shadow-lg"
+                        >
+
+                            <img
+                                src="about-real-estate-consultation.jpg"
+                                alt="Young African property professional helping clients explore a home"
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                            >
+
+                        </div>
+
+
+                        <!-- Experience Card -->
+
+                        <div
+                            class="absolute -bottom-8 -right-4 md:right-8 bg-white rounded-2xl shadow-xl p-6"
+                        >
+
+                            <p
+                                class="text-4xl font-bold text-gold"
+                            >
+                                Trusted
+                            </p>
+
+                            <p
+                                class="text-sm font-medium text-gray-600 mt-1"
+                            >
+                                Property Service
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Content -->
+
+                    <div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm"
+                        >
+                            About <span data-site="businessName">Danny Agent</span>
+                        </p>
+
+                        <h2
+                            class="text-3xl md:text-4xl font-bold text-navy mt-3 leading-tight"
+                        >
+                            Property Decisions Should Feel Simple.
+                        </h2>
+
+                        <p
+                            class="text-gray-600 mt-6 leading-relaxed"
+                        >
+                            At <span data-site="businessName">Danny Agent</span>, we believe finding or
+                            investing in property should be clear,
+                            reliable and convenient.
+                        </p>
+
+                        <p
+                            class="text-gray-600 mt-4 leading-relaxed"
+                        >
+                            Our goal is to connect individuals,
+                            families and businesses with properties
+                            that fit their needs and long-term goals.
+                        </p>
+
+
+                        <div
+                            class="grid sm:grid-cols-2 gap-5 mt-8"
+                        >
+
+                            <div
+                                class="flex gap-3"
+                            >
+
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-lightgold flex items-center justify-center text-gold flex-shrink-0"
+                                >
+
+                                    <i
+                                        data-lucide="search-check"
+                                        class="w-5 h-5"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h3
+                                        class="font-bold text-navy"
+                                    >
+                                        Carefully Selected
+                                    </h3>
+
+                                    <p
+                                        class="text-sm text-gray-500 mt-1"
+                                    >
+                                        Quality listings for different needs.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="flex gap-3"
+                            >
+
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-lightgold flex items-center justify-center text-gold flex-shrink-0"
+                                >
+
+                                    <i
+                                        data-lucide="users"
+                                        class="w-5 h-5"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h3
+                                        class="font-bold text-navy"
+                                    >
+                                        Client Focused
+                                    </h3>
+
+                                    <p
+                                        class="text-sm text-gray-500 mt-1"
+                                    >
+                                        We put your needs first.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <a href="about.html"
+                            class="inline-flex items-center gap-2 bg-navy text-white px-6 py-3.5 rounded-lg font-semibold mt-8 hover:bg-darknavy transition"
+                        >
+
+                            Learn More About Us
+
+                            <i
+                                data-lucide="arrow-right"
+                                class="w-5 h-5"
+                            ></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             SERVICES
+        ========================================== -->
+
+        <section
+            id="services"
+            class="py-24"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="text-center max-w-2xl mx-auto mb-14"
+                >
+
+                    <p
+                        class="text-gold font-bold uppercase tracking-widest text-sm"
+                    >
+                        Our Services
+                    </p>
+
+                    <h2
+                        class="text-3xl md:text-4xl font-bold text-navy mt-3"
+                    >
+                        Everything You Need in One Place
+                    </h2>
+
+                    <p
+                        class="text-gray-600 mt-4"
+                    >
+                        From finding your next home to managing
+                        property investments, we're here to help.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+                >
+
+                    <!-- Service -->
+
+                    <article
+                        class="p-7 border border-gray-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 bg-lightgold text-gold rounded-xl flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="home"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Property Sales
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            Find suitable residential and commercial
+                            properties for purchase.
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="p-7 border border-gray-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 bg-lightgold text-gold rounded-xl flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="key-round"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Property Rentals
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            Explore apartments, houses and spaces
+                            available for rent.
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="p-7 border border-gray-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 bg-lightgold text-gold rounded-xl flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="landmark"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Property Investment
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            Get guidance when exploring property
+                            opportunities and investments.
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="p-7 border border-gray-100 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 bg-lightgold text-gold rounded-xl flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="building"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Property Management
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            Professional support for property owners
+                            and landlords.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             WHY CHOOSE US
+        ========================================== -->
+
+        <section
+            class="py-24 bg-navy text-white"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="grid lg:grid-cols-2 gap-14 items-center"
+                >
+
+                    <div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm"
+                        >
+                            Why Choose Us
+                        </p>
+
+                        <h2
+                            class="text-3xl md:text-4xl font-bold mt-3"
+                        >
+                            We Make Property Search Easier.
+                        </h2>
+
+                        <p
+                            class="text-blue-100 mt-5 leading-relaxed"
+                        >
+                            Whether you're buying your first home,
+                            looking for a rental or exploring an
+                            investment, our process is designed
+                            around your needs.
+                        </p>
+
+                        <div
+                            class="mt-8 space-y-5"
+                        >
+
+                            <div
+                                class="flex gap-4"
+                            >
+
+                                <div
+                                    class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0"
+                                >
+
+                                    <i
+                                        data-lucide="check"
+                                        class="w-5 h-5 text-gold"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h3
+                                        class="font-bold text-lg"
+                                    >
+                                        Transparent Process
+                                    </h3>
+
+                                    <p
+                                        class="text-blue-100 mt-1"
+                                    >
+                                        Clear information from property search to closing.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="flex gap-4"
+                            >
+
+                                <div
+                                    class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0"
+                                >
+
+                                    <i
+                                        data-lucide="clock-3"
+                                        class="w-5 h-5 text-gold"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h3
+                                        class="font-bold text-lg"
+                                    >
+                                        Responsive Support
+                                    </h3>
+
+                                    <p
+                                        class="text-blue-100 mt-1"
+                                    >
+                                        Get help when you need it throughout your property journey.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="flex gap-4"
+                            >
+
+                                <div
+                                    class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0"
+                                >
+
+                                    <i
+                                        data-lucide="shield"
+                                        class="w-5 h-5 text-gold"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h3
+                                        class="font-bold text-lg"
+                                    >
+                                        Quality Focus
+                                    </h3>
+
+                                    <p
+                                        class="text-blue-100 mt-1"
+                                    >
+                                        We prioritize suitable and trustworthy property opportunities.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Help card -->
+                    <div class="bg-white/10 border border-white/10 rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold text-white">Not sure where to start?</h3>
+                        <p class="text-blue-100 mt-4 leading-relaxed">
+                            Tell us what you need and your budget. We will come back to you with options that fit.
+                        </p>
+                        <div class="flex flex-wrap gap-4 mt-8">
+                            <a href="contact.html" class="inline-flex items-center gap-2 bg-gold text-darknavy px-6 py-3.5 rounded-lg font-bold hover:bg-yellow-400 transition">Send an Enquiry</a>
+                            <a href="https://wa.me/23276673667" data-site-href="whatsapp" target="_blank" rel="noopener" class="inline-flex items-center gap-2 border border-white/30 text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-white/10 transition">Chat on WhatsApp</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        
+
+
+
+        <!-- =========================================
+             CTA
+        ========================================== -->
+
+        <section
+            class="py-20"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="bg-gradient-to-r from-navy to-darknavy rounded-3xl px-7 py-14 md:px-12 text-white text-center"
+                >
+
+                    <p
+                        class="text-gold font-bold uppercase tracking-widest text-sm"
+                    >
+                        Start Your Property Journey
+                    </p>
+
+                    <h2
+                        class="text-3xl md:text-4xl font-bold mt-3"
+                    >
+                        Ready to Find Your Next Property?
+                    </h2>
+
+                    <p
+                        class="text-blue-100 max-w-2xl mx-auto mt-4"
+                    >
+                        Tell us what you're looking for and
+                        our team will help you find suitable options.
+                    </p>
+
+                    <a
+                        href="#contact"
+                        class="inline-flex items-center gap-2 bg-gold text-darknavy px-7 py-3.5 rounded-lg font-bold mt-7 hover:bg-yellow-400 transition"
+                    >
+
+                        Get Started
+
+                        <i
+                            data-lucide="arrow-right"
+                            class="w-5 h-5"
+                        ></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             CONTACT
+        ========================================== -->
+
+        <section
+            id="contact"
+            class="py-24 bg-gray-50"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="grid lg:grid-cols-2 gap-14"
+                >
+
+                    <div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm"
+                        >
+                            Contact Us
+                        </p>
+
+                        <h2
+                            class="text-3xl md:text-4xl font-bold text-navy mt-3"
+                        >
+                            Let's Find the Right Property for You.
+                        </h2>
+
+                        <p
+                            class="text-gray-600 mt-5 leading-relaxed"
+                        >
+                            Have a question or want to speak with
+                            an agent? Send us a message and we'll
+                            get back to you.
+                        </p>
+
+
+                        <div
+                            class="space-y-6 mt-8"
+                        >
+
+                            <div class="flex gap-4">
+
+                                <div
+                                    class="w-11 h-11 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                                >
+
+                                    <i
+                                        data-lucide="phone"
+                                        class="w-5 h-5"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <p
+                                        class="font-bold text-navy"
+                                    >
+                                        Phone
+                                    </p>
+
+                                    <a href="tel:+23276683667" data-site-href="phone" data-site="phone" class="text-gray-500 hover:text-navy transition">+232 76 683667</a>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="flex gap-4">
+
+                                <div
+                                    class="w-11 h-11 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                                >
+
+                                    <i
+                                        data-lucide="mail"
+                                        class="w-5 h-5"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <p
+                                        class="font-bold text-navy"
+                                    >
+                                        Email
+                                    </p>
+
+                                    <a href="mailto:dannyagento1@gmail.com" data-site-href="email" data-site="email" class="text-gray-500 hover:text-navy transition">dannyagento1@gmail.com</a>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="flex gap-4">
+                                <div class="w-11 h-11 rounded-xl bg-lightgold text-gold flex items-center justify-center">
+                                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-navy">WhatsApp</p>
+                                    <a href="https://wa.me/23276673667" data-site-href="whatsapp" target="_blank" rel="noopener" class="text-gray-500 hover:text-navy transition">Chat with us</a>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+
+                                <div
+                                    class="w-11 h-11 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                                >
+
+                                    <i
+                                        data-lucide="map-pin"
+                                        class="w-5 h-5"
+                                    ></i>
+
+                                </div>
+
+                                <div>
+
+                                    <p
+                                        class="font-bold text-navy"
+                                    >
+                                        Office
+                                    </p>
+
+                                    <p
+                                        class="text-gray-500"
+                                    ><span data-site="address">Freetown, Sierra Leone</span></p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Contact Form -->
+
+                    <div
+                        class="bg-white rounded-2xl shadow-sm p-7 md:p-9"
+                    >
+
+                        <form
+                            id="contactForm"
+                            class="space-y-5"
+                        >
+
+                            <div
+                                class="grid sm:grid-cols-2 gap-5"
+                            >
+
+                                <div>
+
+                                    <label for="name"
+                                        class="block text-sm font-semibold text-gray-700 mb-2"
+                                    >
+                                        Full Name
+                                    </label>
+
+                                    <input
+                                        id="name" autocomplete="name"
+                                        type="text"
+                                        required
+                                        placeholder="Your name"
+                                        class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                    >
+
+                                </div>
+
+
+                                <div>
+
+                                    <label for="phone"
+                                        class="block text-sm font-semibold text-gray-700 mb-2"
+                                    >
+                                        Phone
+                                    </label>
+
+                                    <input
+                                        id="phone" autocomplete="tel"
+                                        type="tel"
+                                        required
+                                        placeholder="+232..."
+                                        class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+                                <label for="email"
+                                    class="block text-sm font-semibold text-gray-700 mb-2"
+                                >
+                                    Email
+                                </label>
+
+                                <input
+                                    id="email" autocomplete="email"
+                                    type="email"
+                                    required
+                                    placeholder="you@example.com"
+                                    class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                >
+
+                            </div>
+
+
+                            <div>
+                                <label for="service" class="block text-sm font-semibold text-gray-700 mb-2">I am interested in</label>
+                                <select
+                                    id="service"
+                                    required
+                                    class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy"
+                                >
+                                    <option value="">Choose one</option>
+                                    <option value="buy">Buying a property</option>
+                                    <option value="rent">Renting a property</option>
+                                    <option value="sell">Selling my property</option>
+                                    <option value="investment">Property investment</option>
+                                    <option value="management">Property management</option>
+                                    <option value="other">Something else</option>
+                                </select>
+                            </div>
+                            <div>
+
+                                <label for="message"
+                                    class="block text-sm font-semibold text-gray-700 mb-2"
+                                >
+                                    Message
+                                </label>
+
+                                <textarea
+                                    id="message" minlength="10"
+                                    rows="5"
+                                    required
+                                    placeholder="Tell us what property you are looking for..."
+                                    class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-navy resize-none"
+                                ></textarea>
+
+                            </div>
+
+
+                            <!-- Spam trap: real visitors never see or fill this -->
+                            <div class="absolute -left-[9999px] pointer-events-none" aria-hidden="true">
+                                <label for="website">Leave this field empty</label>
+                                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+                            <button
+                                type="submit"
+                                class="w-full bg-navy text-white py-3.5 rounded-lg font-semibold hover:bg-darknavy transition"
+                            >
+
+                                Send Message
+
+                            </button>
+
+
+                            <p
+                                id="formMessage"
+                                class="text-sm text-center hidden"
+                            ></p>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer
+        class="bg-darknavy text-white"
+    >
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gold text-darknavy flex items-center justify-center">
+                            <i data-lucide="home" class="w-5 h-5"></i>
+                        </div>
+                        <p class="font-bold text-lg"><span data-site="businessName">Danny Agent</span></p>
+                    </div>
+                    <p class="text-blue-100 text-sm leading-relaxed mt-5">
+                        Helping people find quality property and make better real-estate decisions.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-bold">Quick Links</h3>
+                    <div class="space-y-3 mt-5 text-sm text-blue-100">
+                        <a href="index.html" class="block hover:text-gold">Home</a>
+                        <a href="properties.html" class="block hover:text-gold">Properties</a>
+                        <a href="about.html" class="block hover:text-gold">About Us</a>
+                        <a href="favorites.html" class="block hover:text-gold">Favorites</a>
+                        <a href="contact.html" class="block hover:text-gold">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="font-bold">Contact</h3>
+                    <div class="space-y-3 mt-5 text-sm text-blue-100">
+                        <p data-site-hide-empty="address"><span data-site="address">Freetown, Sierra Leone</span></p>
+                        <p data-site-hide-empty="phone"><a href="tel:+23276683667" data-site-href="phone" data-site="phone" class="hover:text-gold">+232 76 683667</a></p>
+                        <p data-site-hide-empty="email"><a href="mailto:dannyagento1@gmail.com" data-site-href="email" data-site="email" class="hover:text-gold">dannyagento1@gmail.com</a></p>
+                    </div>
+                </div>
+
+                <!-- Social -->
+                <div>
+                    <h3 class="font-bold">Follow Us</h3>
+                    <div class="flex gap-3 mt-5">
+                        <a href="https://wa.me/23276673667" data-site-href="whatsapp" data-site-hide-empty="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" data-site-href="facebook" data-site-hide-empty="facebook" target="_blank" rel="noopener" aria-label="Facebook"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" data-site-href="instagram" data-site-hide-empty="instagram" target="_blank" rel="noopener" aria-label="Instagram"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-12 pt-7 flex flex-col md:flex-row justify-between gap-4 text-sm text-blue-100">
+                <p>© <span data-site-year>2026</span> <span data-site="businessName">Danny Agent</span>. All rights reserved.</p>
+                <p>Built by Danny</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="js/properties.js"></script>
+    <script src="js/site-config.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/pages/index.js"></script>
+
+
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Your shortlist of saved properties. Come back to them any time and send an enquiry when you are ready."
+    >
+
+    <title>Saved Properties | Danny Agent</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta name="theme-color" content="#123B63">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+
+
+<body class="bg-gray-50 text-gray-900">
+    <noscript>
+        <div class="bg-amber-100 text-amber-900 text-sm text-center px-4 py-3">
+            JavaScript is turned off, so property listings and forms cannot load.
+            Please turn it on, or contact us: %%CONTACT_LINKS%%
+        </div>
+    </noscript>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header
+        class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100"
+    >
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            <div class="h-20 flex items-center justify-between">
+
+                <!-- Logo -->
+
+                <a
+                    href="index.html"
+                    class="flex items-center gap-3"
+                >
+
+                    <div
+                        class="w-11 h-11 rounded-xl bg-navy text-white flex items-center justify-center"
+                    >
+
+                        <i
+                            data-lucide="home"
+                            class="w-6 h-6"
+                        ></i>
+
+                    </div>
+
+                    <div>
+
+                        <span class="block text-xl font-bold text-navy" data-site="businessName">Danny Agent</span>
+
+                        <p
+                            class="text-xs text-gray-500"
+                        >
+                            Your Property. Your Future.
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Desktop Navigation -->
+
+                <nav
+                    class="hidden lg:flex items-center gap-8"
+                    aria-label="Main"
+                >
+                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Home</a>
+                    <a href="properties.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Properties</a>
+                    <a href="about.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">About Us</a>
+                    <a href="index.html#services" class="text-sm font-medium text-gray-600 hover:text-navy transition">Services</a>
+                    <a href="favorites.html" class="text-sm font-medium text-navy hover:text-gold transition inline-flex items-center gap-2" aria-current="page"><i data-lucide="heart" class="w-4 h-4"></i>Favorites <span data-favorites-count class="min-w-5 h-5 px-1 rounded-full bg-gold text-darknavy text-xs font-bold inline-flex items-center justify-center">0</span></a>
+                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Contact</a>
+                </nav>
+
+
+                <!-- Saved Properties -->
+
+                <a
+                    href="contact.html"
+                    class="hidden lg:inline-flex items-center gap-2 border border-gray-200 text-navy px-4 py-3 rounded-lg text-sm font-semibold hover:bg-gray-50 transition"
+                >
+
+                    <i
+                        data-lucide="heart"
+                        class="w-4 h-4"
+                    ></i>
+
+                    Saved
+
+                    <span
+                        id="desktopCount" data-favorites-count
+                        class="bg-navy text-white text-xs min-w-5 h-5 px-1 rounded-full flex items-center justify-center"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
+                <!-- Mobile Menu -->
+
+                <button
+                    id="menuButton"
+                    class="lg:hidden p-2 text-navy"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="mobileMenu"
+                >
+
+                    <i
+                        data-lucide="menu"
+                        class="w-6 h-6"
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mobile Menu -->
+
+        <div
+            id="mobileMenu"
+            class="hidden lg:hidden border-t border-gray-100 bg-white"
+        >
+
+            <nav
+                class="px-6 py-5 space-y-4"
+                aria-label="Mobile"
+            >
+                <a href="index.html" class="block text-gray-700 font-medium">Home</a>
+                <a href="properties.html" class="block text-gray-700 font-medium">Properties</a>
+                <a href="about.html" class="block text-gray-700 font-medium">About Us</a>
+                <a href="index.html#services" class="block text-gray-700 font-medium">Services</a>
+                <a href="favorites.html" class="block text-navy font-bold" aria-current="page">Favorites <span data-favorites-count class="ml-1 min-w-5 h-5 px-1 rounded-full bg-gold text-darknavy text-xs font-bold inline-flex items-center justify-center">0</span></a>
+                <a href="contact.html" class="block text-gray-700 font-medium">Contact</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <main class="pt-20">
+
+        <section
+            class="bg-navy py-20"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <p
+                    class="text-gold font-bold uppercase tracking-widest text-sm"
+                >
+                    Your Shortlist
+                </p>
+
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-white mt-3"
+                >
+                    Saved Properties
+                </h1>
+
+                <p
+                    class="text-blue-100 max-w-2xl mt-5 text-lg"
+                >
+                    Keep track of properties you are interested in
+                    and come back to them whenever you're ready.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             SAVED PROPERTIES
+        ========================================== -->
+
+        <section class="py-16">
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <!-- Results Header -->
+
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8"
+                >
+
+                    <div>
+
+                        <p
+                            class="text-sm text-gray-500"
+                        >
+                            Your saved listings
+                        </p>
+
+                        <h2
+                            class="text-2xl font-bold text-navy mt-1"
+                        >
+                            My Favorites
+                        </h2>
+
+                    </div>
+
+                    <p
+                        id="resultsCount" aria-live="polite"
+                        class="text-sm font-medium text-gray-500"
+                    >
+                        0 saved properties
+                    </p>
+
+                </div>
+
+
+                <!-- Property Grid -->
+
+                <div id="favoritesActions" class="mb-8"></div>
+
+                    <div
+                    id="favoritesGrid"
+                    class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             CALL TO ACTION
+        ========================================== -->
+
+        <section class="pb-20">
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="bg-gradient-to-r from-navy to-darknavy rounded-3xl p-8 md:p-12 text-white text-center"
+                >
+
+                    <h2
+                        class="text-3xl font-bold"
+                    >
+                        Looking for Something Else?
+                    </h2>
+
+                    <p
+                        class="text-blue-100 max-w-2xl mx-auto mt-4"
+                    >
+                        Explore all our available property listings
+                        and find your next opportunity.
+                    </p>
+
+                    <a
+                        href="properties.html"
+                        class="inline-flex items-center gap-2 bg-gold text-darknavy px-7 py-3.5 rounded-lg font-bold mt-7 hover:bg-yellow-400 transition"
+                    >
+
+                        Browse Properties
+
+                        <i
+                            data-lucide="arrow-right"
+                            class="w-5 h-5"
+                        ></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer
+        class="bg-darknavy text-white"
+    >
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gold text-darknavy flex items-center justify-center">
+                            <i data-lucide="home" class="w-5 h-5"></i>
+                        </div>
+                        <p class="font-bold text-lg"><span data-site="businessName">Danny Agent</span></p>
+                    </div>
+                    <p class="text-blue-100 text-sm leading-relaxed mt-5">
+                        Helping people find quality property and make better real-estate decisions.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-bold">Quick Links</h3>
+                    <div class="space-y-3 mt-5 text-sm text-blue-100">
+                        <a href="index.html" class="block hover:text-gold">Home</a>
+                        <a href="properties.html" class="block hover:text-gold">Properties</a>
+                        <a href="about.html" class="block hover:text-gold">About Us</a>
+                        <a href="favorites.html" class="block hover:text-gold">Favorites</a>
+                        <a href="contact.html" class="block hover:text-gold">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="font-bold">Contact</h3>
+                    <div class="space-y-3 mt-5 text-sm text-blue-100">
+                        <p data-site-hide-empty="address"><span data-site="address">Freetown, Sierra Leone</span></p>
+                        <p data-site-hide-empty="phone"><a href="tel:+23276683667" data-site-href="phone" data-site="phone" class="hover:text-gold">+232 76 683667</a></p>
+                        <p data-site-hide-empty="email"><a href="mailto:dannyagento1@gmail.com" data-site-href="email" data-site="email" class="hover:text-gold">dannyagento1@gmail.com</a></p>
+                    </div>
+                </div>
+
+                <!-- Social -->
+                <div>
+                    <h3 class="font-bold">Follow Us</h3>
+                    <div class="flex gap-3 mt-5">
+                        <a href="https://wa.me/23276673667" data-site-href="whatsapp" data-site-hide-empty="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" data-site-href="facebook" data-site-hide-empty="facebook" target="_blank" rel="noopener" aria-label="Facebook"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" data-site-href="instagram" data-site-hide-empty="instagram" target="_blank" rel="noopener" aria-label="Instagram"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-12 pt-7 flex flex-col md:flex-row justify-between gap-4 text-sm text-blue-100">
+                <p>© <span data-site-year>2026</span> <span data-site="businessName">Danny Agent</span>. All rights reserved.</p>
+                <p>Built by Danny</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+    <script src="js/properties.js"></script>
+    <script src="js/site-config.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/pages/favorites.js"></script>
+
+
+</html>

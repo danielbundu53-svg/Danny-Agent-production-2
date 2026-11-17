@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Easier to tap on phones and tablets: links that are only text get a 44px tall touch area
+   (the size Apple and Google recommend). Desktop with a mouse is unchanged. */
+@media (max-width: 1023px), (pointer: coarse) {
+  #mobileMenu nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  footer a,
+  main nav a,
+  a.crumb,
+  a[href^="tel:"],
+  a[href^="mailto:"],
+  main a:is(.font-bold, .font-semibold):not([class*="px-"]) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  footer ul { margin-top: 0; }
+}

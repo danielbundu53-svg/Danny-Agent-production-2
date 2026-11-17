@@ -1,0 +1,33 @@
+# Render Blueprint: creates the website and its persistent disk in one go.
+# Single instance only: the database is a file on the disk.
+services:
+  - type: web
+    name: danny-agent
+    runtime: node
+    plan: starter            # a persistent disk needs a paid plan
+    region: frankfurt        # closest Render region to Sierra Leone
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_KEY
+        generateValue: true  # Render makes a long random key; read it in the Environment tab
+      - key: SITE_URL
+        sync: false          # you type this in the dashboard, e.g. https://www.yourdomain.com
+      - key: ANTHROPIC_API_KEY
+        sync: false          # paste your key in the dashboard; leave empty to keep the chat window off
+      - key: CHAT_DAILY_LIMIT
+        value: 400
+      - key: DATABASE_PATH
+        value: /var/data/danny-angel.sqlite
+      - key: CACHE_DIR
+        value: /var/data/cache
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1

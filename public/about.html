@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Learn how Danny Agent helps people buy, rent and invest in property in Freetown, Sierra Leone."
+    >
+
+    <title>About Us | Danny Agent</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta name="theme-color" content="#123B63">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+
+
+<body class="bg-white text-gray-900">
+    <noscript>
+        <div class="bg-amber-100 text-amber-900 text-sm text-center px-4 py-3">
+            JavaScript is turned off, so property listings and forms cannot load.
+            Please turn it on, or contact us: %%CONTACT_LINKS%%
+        </div>
+    </noscript>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header
+        class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100"
+    >
+
+        <div
+            class="max-w-7xl mx-auto px-6 lg:px-8"
+        >
+
+            <div
+                class="h-20 flex items-center justify-between"
+            >
+
+<!-- Logo -->
+
+<a
+                    href="index.html"
+                    class="flex items-center gap-3"
+                >
+
+                    <div
+                        class="w-11 h-11 rounded-xl bg-navy text-white flex items-center justify-center"
+                    >
+
+                        <i
+                            data-lucide="home"
+                            class="w-6 h-6"
+                        ></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="block text-xl font-bold text-navy" data-site="businessName">Danny Agent</span>
+
+                        <p
+                            class="text-xs text-gray-500"
+                        >
+                            Your Property. Your Future.
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Desktop Navigation -->
+
+                <nav
+                    class="hidden lg:flex items-center gap-8"
+                    aria-label="Main"
+                >
+                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Home</a>
+                    <a href="properties.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Properties</a>
+                    <a href="about.html" class="text-sm font-medium text-navy hover:text-gold transition" aria-current="page">About Us</a>
+                    <a href="index.html#services" class="text-sm font-medium text-gray-600 hover:text-navy transition">Services</a>
+                    <a href="favorites.html" class="text-sm font-medium text-gray-600 hover:text-navy transition inline-flex items-center gap-2"><i data-lucide="heart" class="w-4 h-4"></i>Favorites <span data-favorites-count class="min-w-5 h-5 px-1 rounded-full bg-gold text-darknavy text-xs font-bold inline-flex items-center justify-center">0</span></a>
+                    <a href="contact.html" class="text-sm font-medium text-gray-600 hover:text-navy transition">Contact</a>
+                </nav>
+
+
+                <!-- Contact Button -->
+
+                <a
+                    href="contact.html"
+                    class="hidden lg:inline-flex items-center gap-2 bg-navy text-white px-5 py-3 rounded-lg text-sm font-semibold hover:bg-darknavy transition"
+                >
+
+                    <i
+                        data-lucide="phone"
+                        class="w-4 h-4"
+                    ></i>
+
+                    Contact Us
+
+                </a>
+
+
+                <!-- Mobile Menu Button -->
+
+                <button
+                    id="menuButton"
+                    class="lg:hidden p-2 text-navy"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="mobileMenu"
+                >
+
+                    <i
+                        data-lucide="menu"
+                        class="w-6 h-6"
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mobile Menu -->
+
+        <div
+            id="mobileMenu"
+            class="hidden lg:hidden border-t border-gray-100 bg-white"
+        >
+
+            <nav
+                class="px-6 py-5 space-y-4"
+                aria-label="Mobile"
+            >
+                <a href="index.html" class="block text-gray-700 font-medium">Home</a>
+                <a href="properties.html" class="block text-gray-700 font-medium">Properties</a>
+                <a href="about.html" class="block text-navy font-bold" aria-current="page">About Us</a>
+                <a href="index.html#services" class="block text-gray-700 font-medium">Services</a>
+                <a href="favorites.html" class="block text-gray-700 font-medium">Favorites <span data-favorites-count class="ml-1 min-w-5 h-5 px-1 rounded-full bg-gold text-darknavy text-xs font-bold inline-flex items-center justify-center">0</span></a>
+                <a href="contact.html" class="block text-gray-700 font-medium">Contact</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <main class="pt-20">
+
+        <section
+            class="bg-navy py-24"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="max-w-3xl"
+                >
+
+                    <p
+                        class="text-gold font-bold uppercase tracking-widest text-sm"
+                    >
+                        About <span data-site="businessName">Danny Agent</span>
+                    </p>
+
+                    <h1
+                        class="text-4xl md:text-5xl font-bold text-white mt-4 leading-tight"
+                    >
+                        Helping People Make Better Property Decisions.
+                    </h1>
+
+                    <p
+                        class="text-blue-100 text-lg leading-relaxed mt-6"
+                    >
+                        We connect individuals, families and businesses
+                        with property opportunities designed around their
+                        needs, goals and budgets.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             OUR STORY
+        ========================================== -->
+
+        <section class="py-24">
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="grid lg:grid-cols-2 gap-14 items-center"
+                >
+
+                    <!-- Visual -->
+
+                    <div
+                        class="relative"
+                    >
+
+                        <div
+                            class="bg-gradient-to-br from-navy to-blue-800 rounded-3xl min-h-[470px] flex items-center justify-center overflow-hidden"
+                        >
+
+                            <i
+                                data-lucide="building-2"
+                                class="w-40 h-40 text-white/15"
+                            ></i>
+
+                        </div>
+
+
+                        <div
+                            class="absolute bottom-7 left-7 bg-white rounded-2xl shadow-xl p-6 max-w-[230px]"
+                        >
+
+                            <p
+                                class="text-sm text-gray-500"
+                            >
+                                Our commitment
+                            </p>
+
+                            <p
+                                class="font-bold text-navy text-lg mt-1"
+                            >
+                                Trust. Clarity. Service.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Story -->
+
+                    <div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm"
+                        >
+                            Our Story
+                        </p>
+
+                        <h2
+                            class="text-3xl md:text-4xl font-bold text-navy mt-3"
+                        >
+                            Real Estate Should Be About People.
+                        </h2>
+
+                        <p
+                            class="text-gray-600 leading-relaxed mt-6"
+                        >
+                            Buying, renting or investing in property
+                            can be a major financial and personal
+                            decision. At <span data-site="businessName">Danny Agent</span>, our approach
+                            is built around making that journey clearer
+                            and easier for our clients.
+                        </p>
+
+                        <p
+                            class="text-gray-600 leading-relaxed mt-5"
+                        >
+                            We aim to provide useful property information,
+                            responsive support and a straightforward
+                            experience from the first search through
+                            the next step.
+                        </p>
+
+
+                        <div
+                            class="grid sm:grid-cols-2 gap-5 mt-8"
+                        >
+
+                            <div
+                                class="border-l-4 border-gold pl-5"
+                            >
+
+                                <p
+                                    class="text-2xl font-bold text-navy"
+                                >
+                                    <span id="listingCount">0</span>
+                                </p>
+
+                                <p
+                                    class="text-sm text-gray-500 mt-1"
+                                >
+                                    Properties Listed
+                                </p>
+
+                            </div>
+
+
+                            <div
+                                class="border-l-4 border-gold pl-5"
+                            >
+
+                                <p
+                                    class="text-2xl font-bold text-navy"
+                                >
+                                    Freetown
+                                </p>
+
+                                <p
+                                    class="text-sm text-gray-500 mt-1"
+                                >
+                                    Where We Work
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             MISSION / VISION
+        ========================================== -->
+
+        <section
+            class="py-24 bg-gray-50"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="grid md:grid-cols-2 gap-7"
+                >
+
+                    <!-- Mission -->
+
+                    <article
+                        class="bg-white rounded-2xl p-8 border border-gray-100"
+                    >
+
+                        <div
+                            class="w-14 h-14 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="target"
+                                class="w-7 h-7"
+                            ></i>
+
+                        </div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm mt-7"
+                        >
+                            Our Mission
+                        </p>
+
+                        <h2
+                            class="text-2xl font-bold text-navy mt-2"
+                        >
+                            Make Property Search Simpler.
+                        </h2>
+
+                        <p
+                            class="text-gray-600 leading-relaxed mt-4"
+                        >
+                            Our mission is to help clients discover
+                            suitable properties and navigate their
+                            property journey with greater confidence,
+                            clarity and convenience.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Vision -->
+
+                    <article
+                        class="bg-white rounded-2xl p-8 border border-gray-100"
+                    >
+
+                        <div
+                            class="w-14 h-14 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="eye"
+                                class="w-7 h-7"
+                            ></i>
+
+                        </div>
+
+                        <p
+                            class="text-gold font-bold uppercase tracking-widest text-sm mt-7"
+                        >
+                            Our Vision
+                        </p>
+
+                        <h2
+                            class="text-2xl font-bold text-navy mt-2"
+                        >
+                            Build a More Connected Property Experience.
+                        </h2>
+
+                        <p
+                            class="text-gray-600 leading-relaxed mt-4"
+                        >
+                            We envision a modern property platform
+                            where people can discover, compare and
+                            enquire about property opportunities with
+                            less friction.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             VALUES
+        ========================================== -->
+
+        <section class="py-24">
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="text-center max-w-2xl mx-auto mb-14"
+                >
+
+                    <p
+                        class="text-gold font-bold uppercase tracking-widest text-sm"
+                    >
+                        Our Values
+                    </p>
+
+                    <h2
+                        class="text-3xl md:text-4xl font-bold text-navy mt-3"
+                    >
+                        What Guides Us
+                    </h2>
+
+                    <p
+                        class="text-gray-600 mt-4"
+                    >
+                        The principles behind the experience
+                        we want every client to receive.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                >
+
+                    <!-- Value 1 -->
+
+                    <article
+                        class="rounded-2xl border border-gray-100 p-7 hover:shadow-lg transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="shield-check"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Trust
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            We aim to communicate clearly and
+                            build confidence through every interaction.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Value 2 -->
+
+                    <article
+                        class="rounded-2xl border border-gray-100 p-7 hover:shadow-lg transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="sparkles"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Quality
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            We focus on useful property opportunities
+                            and a professional client experience.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Value 3 -->
+
+                    <article
+                        class="rounded-2xl border border-gray-100 p-7 hover:shadow-lg transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="users"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            People First
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            We listen to client needs and tailor
+                            our support around real goals.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Value 4 -->
+
+                    <article
+                        class="rounded-2xl border border-gray-100 p-7 hover:shadow-lg transition"
+                    >
+
+                        <div
+                            class="w-12 h-12 rounded-xl bg-lightgold text-gold flex items-center justify-center"
+                        >
+
+                            <i
+                                data-lucide="lightbulb"
+                                class="w-6 h-6"
+                            ></i>
+
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold text-navy mt-6"
+                        >
+                            Innovation
+                        </h3>
+
+                        <p
+                            class="text-gray-500 mt-3 leading-relaxed"
+                        >
+                            We use modern technology to make
+                            property discovery more convenient.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             PROCESS
+        ========================================== -->
+
+        <section
+            class="py-24 bg-navy text-white"
+        >
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="text-center max-w-2xl mx-auto"
+                >
+
+                    <p
+                        class="text-gold font-bold uppercase tracking-widest text-sm"
+                    >
+                        Our Process
+                    </p>
+
+                    <h2
+                        class="text-3xl md:text-4xl font-bold mt-3"
+                    >
+                        A Simple Way to Start
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="grid md:grid-cols-4 gap-6 mt-14"
+                >
+
+                    <!-- Step 1 -->
+
+                    <div
+                        class="text-center"
+                    >
+
+                        <div
+                            class="w-14 h-14 rounded-full bg-gold text-darknavy font-bold text-xl flex items-center justify-center mx-auto"
+                        >
+                            1
+                        </div>
+
+                        <h3
+                            class="font-bold text-xl mt-5"
+                        >
+                            Search
+                        </h3>
+
+                        <p
+                            class="text-blue-100 text-sm leading-relaxed mt-2"
+                        >
+                            Tell us what type of property
+                            you're looking for.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Step 2 -->
+
+                    <div
+                        class="text-center"
+                    >
+
+                        <div
+                            class="w-14 h-14 rounded-full bg-gold text-darknavy font-bold text-xl flex items-center justify-center mx-auto"
+                        >
+                            2
+                        </div>
+
+                        <h3
+                            class="font-bold text-xl mt-5"
+                        >
+                            Explore
+                        </h3>
+
+                        <p
+                            class="text-blue-100 text-sm leading-relaxed mt-2"
+                        >
+                            Review suitable property
+                            options and details.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Step 3 -->
+
+                    <div
+                        class="text-center"
+                    >
+
+                        <div
+                            class="w-14 h-14 rounded-full bg-gold text-darknavy font-bold text-xl flex items-center justify-center mx-auto"
+                        >
+                            3
+                        </div>
+
+                        <h3
+                            class="font-bold text-xl mt-5"
+                        >
+                            Enquire
+                        </h3>
+
+                        <p
+                            class="text-blue-100 text-sm leading-relaxed mt-2"
+                        >
+                            Contact our team about a property.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Step 4 -->
+
+                    <div
+                        class="text-center"
+                    >
+
+                        <div
+                            class="w-14 h-14 rounded-full bg-gold text-darknavy font-bold text-xl flex items-center justify-center mx-auto"
+                        >
+                            4
+                        </div>
+
+                        <h3
+                            class="font-bold text-xl mt-5"
+                        >
+                            Move Forward
+                        </h3>
+
+                        <p
+                            class="text-blue-100 text-sm leading-relaxed mt-2"
+                        >
+                            Take the next step with guidance
+                            from the property team.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             CTA
+        ========================================== -->
+
+        <section class="py-20">
+
+            <div
+                class="max-w-7xl mx-auto px-6 lg:px-8"
+            >
+
+                <div
+                    class="bg-gray-50 rounded-3xl p-8 md:p-12 text-center"
+                >
+
+                    <p
+                        class="text-gold font-bold uppercase tracking-widest text-sm"
+                    >
+                        Ready to Explore?
+                    </p>
+
+                    <h2
+                        class="text-3xl md:text-4xl font-bold text-navy mt-3"
+                    >
+                        Your Next Property Could Be Closer Than You Think.
+                    </h2>
+
+                    <p
+                        class="text-gray-600 max-w-2xl mx-auto mt-4"
+                    >
+                        Browse our property listings or speak
+                        with the <span data-site="businessName">Danny Agent</span> team.
+                    </p>
+
+
+                    <div
+                        class="flex flex-wrap justify-center gap-4 mt-7"
+                    >
+
+                        <a
+                            href="properties.html"
+                            class="bg-navy text-white px-7 py-3.5 rounded-lg font-semibold hover:bg-darknavy transition"
+                        >
+                            Explore Properties
+                        </a>
+
+
+                        <a
+                            href="contact.html"
+                            class="border border-gray-300 text-navy px-7 py-3.5 rounded-lg font-semibold hover:bg-white transition"
+                        >
+                            Contact Us
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer
+        class="bg-darknavy text-white"
+    >
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gold text-darknavy flex items-center justify-center">
+                            <i data-lucide="home" class="w-5 h-5"></i>
+                        </div>
+                        <p class="font-bold text-lg"><span data-site="businessName">Danny Agent</span></p>
+                    </div>
+                    <p class="text-blue-100 text-sm leading-relaxed mt-5">
+                        Helping people find quality property and make better real-estate decisions.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-bold">Quick Links</h3>
+                    <div class="space-y-3 mt-5 text-sm text-blue-100">
+                        <a href="index.html" class="block hover:text-gold">Home</a>
+                        <a href="properties.html" class="block hover:text-gold">Properties</a>
+                        <a href="about.html" class="block hover:text-gold">About Us</a>
+                        <a href="favorites.html" class="block hover:text-gold">Favorites</a>
+                        <a href="contact.html" class="block hover:text-gold">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="font-bold">Contact</h3>
+                    <div class="space-y-3 mt-5 text-sm text-blue-100">
+                        <p data-site-hide-empty="address"><span data-site="address">Freetown, Sierra Leone</span></p>
+                        <p data-site-hide-empty="phone"><a href="tel:+23276683667" data-site-href="phone" data-site="phone" class="hover:text-gold">+232 76 683667</a></p>
+                        <p data-site-hide-empty="email"><a href="mailto:dannyagento1@gmail.com" data-site-href="email" data-site="email" class="hover:text-gold">dannyagento1@gmail.com</a></p>
+                    </div>
+                </div>
+
+                <!-- Social -->
+                <div>
+                    <h3 class="font-bold">Follow Us</h3>
+                    <div class="flex gap-3 mt-5">
+                        <a href="https://wa.me/23276673667" data-site-href="whatsapp" data-site-hide-empty="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" data-site-href="facebook" data-site-hide-empty="facebook" target="_blank" rel="noopener" aria-label="Facebook"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" data-site-href="instagram" data-site-hide-empty="instagram" target="_blank" rel="noopener" aria-label="Instagram"
+                            class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-gold hover:text-darknavy transition">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-12 pt-7 flex flex-col md:flex-row justify-between gap-4 text-sm text-blue-100">
+                <p>© <span data-site-year>2026</span> <span data-site="businessName">Danny Agent</span>. All rights reserved.</p>
+                <p>Built by Danny</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+    <script src="js/properties.js"></script>
+    <script src="js/site-config.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/pages/about.js"></script>
+
+
+</html>
