@@ -15,7 +15,17 @@ const { createApp } = require('../server/app');
 export const ADMIN_KEY = 'browser-test-key-0123456789abcdef';
 
 function findChromium() {
-  const candidates = [process.env.CHROMIUM_PATH, '/opt/pw-browsers/chromium', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/google-chrome'];
+  const candidates = [
+    process.env.CHROMIUM_PATH,
+    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+    'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+    '/opt/pw-browsers/chromium',
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/google-chrome'
+  ];
   const found = candidates.find(p => p && fs.existsSync(p));
   return found; // undefined lets Playwright use its own download, if any
 }

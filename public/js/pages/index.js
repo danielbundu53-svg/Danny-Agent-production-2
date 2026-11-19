@@ -27,6 +27,14 @@ function renderProperties(propertyList) {
         const saved = favorites.includes(property.id);
         const detailUrl = `property-detail.html?id=${encodeURIComponent(property.id)}`;
 
+        const statusBadge = property.status === 'under_offer'
+            ? '<span class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Under Offer</span>'
+            : property.status === 'sold'
+            ? '<span class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Sold</span>'
+            : property.status === 'rented'
+            ? '<span class="bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Rented</span>'
+            : '';
+
         return `
             <article class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition group">
                 <div class="h-56 relative overflow-hidden bg-gray-100">
@@ -41,9 +49,12 @@ function renderProperties(propertyList) {
                             decoding="async"
                         >
                     </a>
-                    <span class="absolute top-4 left-4 bg-white text-navy text-xs font-bold px-3 py-1.5 rounded-full">
-                        ${esc(property.purpose)}
-                    </span>
+                    <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                        ${statusBadge}
+                        <span class="bg-white text-navy text-xs font-bold px-3 py-1.5 rounded-full">
+                            ${esc(property.purpose)}
+                        </span>
+                    </div>
                     <button
                         type="button"
                         data-fav="${property.id}"

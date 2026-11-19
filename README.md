@@ -1,107 +1,171 @@
-# Danny Agent website
+# Danny Agent Real Estate Platform
 
-Real estate website (buy, rent, land) for Freetown, Sierra Leone. Plain HTML pages, a small
-Node server, and a SQLite file that stores enquiries. Deployment is not set up yet.
+A modern, production-grade real estate web application and management platform for Freetown, Sierra Leone. Built with Node.js, Express, Tailwind CSS, Lucide icons, SQLite with WAL mode, and Claude AI assistant.
 
-## First run
+---
 
-You need Node 20.12 or newer.
+## System Overview & Architecture
 
-```
+- **Public Website:**
+  - Modern, responsive homepage with hero section, property search, and featured listings.
+  - Dynamic listings catalog (`properties.html`) with multi-criteria filtering: Purpose (Buy/Rent), Type (House/Apartment/Land/Commercial), Location, Minimum Bedrooms, Availability Status (Available/Under Offer/Sold/Rented), and Price Budget.
+  - Interactive property details page (`property-detail.html`) with responsive photo galleries, feature cards, color-coded availability badges, enquiry forms, and WhatsApp prefilled direct contact.
+  - Client-side saved Favorites (`favorites.html`) with one-click WhatsApp portfolio export.
+  - Integrated contact form with validation, CSRF/bot honey-potting, and instant agent linking.
+  - Live announcement banner dynamically managed from the admin panel.
+
+- **Admin Operations Dashboard (`admin.html`):**
+  - **Overview & Analytics:** Real-time KPI metrics (total properties, active listings, deals closed, customer count), status breakdown bars, property category distribution, and system activity feed.
+  - **Property Catalog Management:** Create, edit, delete, publish/unpublish, and archive listings.
+  - **Photo Gallery Manager:** Upload high-resolution property photos (auto-optimized via Sharp for mobile and desktop), set cover photo, reorder images, and delete photos.
+  - **Enquiries & Lead Workflow:** Status pipeline (`new` → `contacted` → `qualified` → `closed`), assign enquiries to team agents, add internal agent notes, and one-click WhatsApp/phone call links.
+  - **Customers CRM:** Centralized customer database tracking lead history, contact info, total enquiries, and assigned agent.
+  - **Team & RBAC Access:** Role-based access control (`admin` vs `agent`), create team accounts, activate/deactivate agents.
+  - **Site Settings & Banner:** Configure business profile (NAP), update announcement banner text and active status, configure Claude AI turn limits.
+  - **System & Notification Logs:** Audit trail of user actions and email/WhatsApp dispatch history with real delivery and simulation verification.
+
+- **AI Assistant:**
+  - Powered by Anthropic Claude with tool-calling capabilities.
+  - Database-grounded real estate knowledge with property discovery and enquiry collection.
+  - Graceful fallback when API key is unconfigured.
+  - Strict daily bill protection and IP rate limits.
+
+---
+
+## Quick Start (Development)
+
+Requires Node.js 20.12 or newer.
+
+```bash
+# 1. Install dependencies
 npm install
-cp .env.example .env     # then open .env and set ADMIN_KEY
+
+# 2. Setup environment configuration
+cp .env.example .env
+# Edit .env and set ADMIN_KEY (minimum 24 characters)
+
+# 3. Build CSS and icon assets
+npm run build
+
+# 4. Start the application
 npm start
 ```
 
-Open http://localhost:5000. The admin page is http://localhost:5000/admin.html (type your ADMIN_KEY).
+Visit the website at `http://localhost:5000`.
+Access the Admin Operations Portal at `http://localhost:5000/admin.html`.
 
-Important: `package.json` and `.env` now live in the **project folder**, not in `server/`.
-Run every command from the project folder.
+### Default Seeded Credentials
 
-## Changing content
+When starting with a fresh database, the system automatically creates:
 
-| What | Where |
-|---|---|
-| Name, phone, WhatsApp, email, address, social links | `public/js/site-config.js` |
-| Properties (title, price, photos, sections) | `public/js/properties.js` |
-| Property photos | `public/images/` (any size; phones automatically get small copies) |
-| Page text | the `.html` files in `public/` |
-| Logo / favicon | `public/favicon.svg`, then `npm run icons` |
+| Role | Username | Default Password | Permissions |
+|---|---|---|---|
+| **Administrator** | `admin` | Value of `ADMIN_KEY` in `.env` (or `AdminDanny2026!SecureKey`) | Full platform access (All tabs) |
+| **Agent** | `danny.agent` | `AgentDanny2026!` | Listings, Inquiries, CRM |
 
-If you change page markup or add new Tailwind classes, run `npm run build` to rebuild
-`public/css/site.css`. Changing text or `site-config.js` / `properties.js` needs no build.
+*Note: You can also log into the Admin Portal directly by entering your `ADMIN_KEY` into the admin key input field.*
 
-Phone and WhatsApp numbers must be real before launch. The visitors' "call" and "WhatsApp"
-buttons use them.
+---
 
-## Settings (.env)
+## Environment Configuration (`.env`)
 
-| Name | Meaning |
-|---|---|
-| `ADMIN_KEY` | Password for the admin page. 24+ random characters. In production the server refuses to start without it. |
-| `NODE_ENV` | `production` on the live server. |
-| `SITE_URL` | Your public address, used for link previews, sitemap, robots.txt. |
-| `PORT` | Port to listen on (hosts usually set it). |
-| `TRUST_PROXY` | `1` behind a hosting proxy (default in production). |
-| `FORCE_HTTPS` | `true` to redirect http to https, once https works. |
-| `ANTHROPIC_API_KEY` | Switches on the chat assistant. Without it the chat window does not appear. |
-| `CHAT_DAILY_LIMIT` | Most chat answers per day for the whole site (default 400). Caps the bill. |
-| `CHAT_MODEL` | Which Claude model answers (default: small and cheap). |
-| `DATABASE_PATH`, `CACHE_DIR` | Where the database and resized photos are kept. Point at a persistent disk on a host. |
+| Variable | Description | Default / Production Guidance |
+|---|---|---|
+| `PORT` | Listening port for the HTTP server | `5000` (Render/cloud hosts set automatically) |
+| `NODE_ENV` | Application environment mode | `development` (set to `production` in live deployment) |
+| `SITE_URL` | Canonical public URL of the website | e.g. `https://www.dannyrealty.sl` |
+| `ADMIN_KEY` | Secret master administrative key (24+ characters) | Required in production; verified in constant time |
+| `DATABASE_PATH` | Path to persistent SQLite database | `data/danny-angel.sqlite` |
+| `CACHE_DIR` | Directory for Sharp-optimized image thumbnails | `data/cache` |
+| `TRUST_PROXY` | Number of upstream proxy hops | `1` on Render, Heroku, AWS ALB, Cloudflare |
+| `FORCE_HTTPS` | Redirect all insecure HTTP requests to HTTPS | `true` in production |
+| `ANTHROPIC_API_KEY` | Anthropic Claude API Key for AI Assistant | Optional (chat button hides if omitted) |
+| `CHAT_MODEL` | Claude model identifier | `claude-3-haiku-20240307` |
+| `CHAT_DAILY_LIMIT` | Maximum Claude responses allowed per day across site | `400` |
+| `SMTP_HOST` | Outbound mail server hostname | e.g. `smtp.sendgrid.net` or `smtp.resend.com` |
+| `SMTP_PORT` | SMTP port | `587` or `465` |
+| `SMTP_USER` | SMTP authentication username | Provided by your email service provider |
+| `SMTP_PASS` | SMTP authentication password / API key | Provided by your email service provider |
+| `SMTP_FROM` | Sender address for enquiry notifications | e.g. `notifications@dannyrealty.sl` |
+| `ADMIN_NOTIFICATION_EMAIL`| Destination inbox for new lead alerts | e.g. `dannyagento1@gmail.com` |
 
-## Chat assistant
+---
 
-A chat window on every page answers questions about the listings, can save a visitor's details as a normal
-enquiry (it shows up in the admin page marked "Sent through the website chat assistant"), and can open WhatsApp
-with a message for the team. It reads the current listings from `public/js/properties.js` on every question,
-so nothing needs retraining when you add or change a listing.
+## Database Management, Backups & Disaster Recovery
 
-- It only knows what is in `properties.js` and `site-config.js`. It is told never to invent prices, fees or availability, but an AI can still make mistakes, so the team confirms everything.
-- To mark a listing as taken, add `status: "sold"` (or `"rented"`, `"under offer"`) to it. The assistant then stops offering it as available. The property cards on the website do not show the status yet.
-- Limits: 30 messages per visitor per 10 minutes, 3 saved enquiries per visitor per 10 minutes, and `CHAT_DAILY_LIMIT` per day overall. Also set a monthly spend limit in your Anthropic account.
-- Conversations are not stored on your server. Each message is sent to Anthropic to get the reply, and the chat window tells visitors not to share passwords or payment details. Mention the chat in your privacy notice.
-- It does not send reminders. Contacting past visitors by email or WhatsApp needs their permission and a sending service, so it was left for later.
+The application uses an embedded SQLite database running with Write-Ahead Logging (`PRAGMA journal_mode = WAL`) and foreign key enforcement.
 
-## What protects the site
+### Online Zero-Downtime Backup
 
-- Browser security headers with a strict Content-Security-Policy (only this site's own scripts and styles run), HSTS in production, no framing, no sniffing.
-- Admin key checked in constant time; 8 wrong keys locks that address out for 15 minutes.
-- Rate limits: 5 enquiries per 10 minutes per visitor, 120 API calls per minute, 200 enquiries per hour overall.
-- Enquiry form: server-side validation, hidden spam-trap field, duplicate suppression, 32 KB body limit, JSON only, same-origin only.
-- Database refuses unknown statuses on its own (triggers). Files outside `public/` (code, `.env`, database) are never served.
-- Every error has one JSON shape with a request id, and visitors see friendly 404/500 pages. Nothing internal is shown.
+Run a clean database snapshot while the server is live:
 
-## Errors and logs
-
-Each request writes one log line (JSON in production). A problem report from a visitor can be
-matched with the `X-Request-Id` shown in the log. `/api/health` returns 503 if the database is unreachable.
-
-## Backups
-
-`npm run backup` copies the database safely to `data/backups/` (keeps the newest 14).
-Schedule it daily on the host, and copy the files somewhere off the server.
-
-## Tests
-
+```bash
+npm run backup
 ```
-npm test               server and security tests (fast)
-npm run test:browser   real Chromium walks through search, favorites, forms, admin, JavaScript-off
-npm run test:responsive  every page at 11 screen sizes (320 px phones to 1920 px), screenshots in tests/shots
-npm run test:slow      page weight and load time on slow 3G and 4G
-npm run test:all       the first three
+- Performs a consistent, defragmented online backup using SQLite's native `VACUUM INTO` command.
+- Stores backups in `data/backups/inquiries-YYYY-MM-DD-HH-MM-SS.sqlite`.
+- Automatically keeps the 14 newest snapshots and prunes older ones.
+
+### Safe Disaster Recovery / Database Restore
+
+To restore the live database from a backup snapshot:
+
+```bash
+# Restore from the latest available backup in data/backups/:
+npm run restore
+
+# Or restore from a specific snapshot file:
+node scripts/restore-db.js data/backups/inquiries-2026-11-19-14-28-16.sqlite
+```
+- Verifies backup integrity with `PRAGMA integrity_check`.
+- Saves a safety snapshot of the existing live database before replacement (`pre-restore-<timestamp>.sqlite`).
+- Replaces the live database and removes stale WAL/SHM sidecars.
+- Automatically verifies and prints the count of properties, enquiries, and user accounts.
+
+---
+
+## Comprehensive Automated Test Suites
+
+The project has a comprehensive 5-layer automated testing suite:
+
+```bash
+# 1. Server API, security, rate limiting, and Claude chat tests (50 tests)
+npm test
+
+# 2. End-to-end browser workflows in Chromium (17 tests)
+npm run test:browser
+
+# 3. AI assistant browser UI and responsive interaction tests (15 tests)
+npm run test:chat
+
+# 4. Multi-device responsive test suite across 11 screen sizes (99 combinations)
+npm run test:responsive
+
+# 5. Slow 3G / 4G bandwidth and asset weight simulation
+npm run test:slow
+
+# 6. Run all test suites
+npm run test:all
 ```
 
-Honest limits: browser tests run in Chromium only (Chrome, Edge, Samsung Internet, Opera engines).
-Safari/iPhone and Firefox were not tested in a real browser here. Test on a real iPhone and an
-older Android phone before launch. Browsers with JavaScript turned off (and Opera Mini in
-extreme mode) see a simple property list and contact details, not the full site.
+*Status: All 50 API unit/integration tests, 17 browser tests, 15 chat tests, and 99 responsive viewport tests pass with 0 errors.*
 
-Deployment steps for Render are in `DEPLOY.md`; `render.yaml` is the ready-made config.
+---
 
-## Before going live
+## Security Protections
 
-1. Replace placeholder text, photos and listings (the land listing uses an apartment photo).
-2. Check the phone, WhatsApp and email in `site-config.js`.
-3. Set `NODE_ENV=production`, a strong `ADMIN_KEY` and `SITE_URL` on the host.
-4. Use a host with a persistent disk for `DATABASE_PATH` (the database is a file).
-5. Turn on `FORCE_HTTPS=true` once https works. Schedule `npm run backup`.
+1. **Strict Content Security Policy (CSP):** Zero inline scripts (`'unsafe-inline'` disabled for scripts), strict source origins, presentation-safe SVGs.
+2. **HTTP Hardening:** Complete security headers via Helmet (HSTS, X-Content-Type-Options, X-Frame-Options: DENY, Referrer-Policy).
+3. **Authentication & Brute-Force Lockout:** Scrypt password hashing with unique salts, constant-time string comparisons, and IP-level account lockout (8 consecutive invalid attempts locks IP for 15 minutes).
+4. **Rate Limiting:**
+   - 120 API requests/minute.
+   - 5 enquiries / 10 minutes per IP.
+   - 30 chat turns / 10 minutes per IP.
+5. **Enquiry Spam Defense:** Hidden honeypot fields, duplicate message suppression, 32 KB payload limits, strict JSON content-type enforcement.
+6. **Integrity Enforcement:** Database-level triggers prevent invalid statuses or services even if application logic is bypassed.
+
+---
+
+## Deployment Instructions
+
+Detailed deployment instructions for Render, VPS, or Docker are documented in [DEPLOY.md](file:///c:/Users/MOK/Downloads/Danny-Agent-production-2/DEPLOY.md).

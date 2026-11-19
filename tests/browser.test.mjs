@@ -19,11 +19,17 @@ const problems = watchPage(page);
 await check('home page shows property cards with photos', async () => {
   await page.goto(site.url + '/', { waitUntil: 'networkidle' });
   assert.ok(await page.locator('#propertyGrid article').count() >= 4);
+  await page.locator('#propertyGrid img').first().scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => {
+    const img = document.querySelector('#propertyGrid img');
+    return img && img.complete && img.naturalWidth > 0;
+  });
   const loaded = await page.$$eval('#propertyGrid img', imgs => imgs.filter(i => i.complete && i.naturalWidth > 0).length);
   assert.ok(loaded >= 1, 'no card photo loaded (lazy images below the fold are fine)');
 });
 
 await check('phone gets the small photo, not the full-size one', async () => {
+  await page.locator('#propertyGrid img').first().scrollIntoViewIfNeeded();
   const src = await page.$eval('#propertyGrid img', i => i.currentSrc);
   assert.match(src, /images\/w\/(480|800)\//);
 });

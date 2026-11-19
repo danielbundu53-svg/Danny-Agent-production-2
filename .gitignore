@@ -6,3 +6,4 @@ data/*.sqlite-shm
 data/cache/
 data/backups/
 *.log
+tests/shots/

@@ -12,7 +12,7 @@ function clean(value, max = 1000) {
   return String(value).trim().slice(0, max);
 }
 
-function createInquiryService({ db, log }) {
+function createInquiryService({ db, log, notifications }) {
   /* Returns one of:
        { result: 'spam' }                      hidden field filled (a bot)
        { result: 'invalid', fields: [...] }    something is wrong; fields names them
@@ -63,13 +63,69 @@ function createInquiryService({ db, log }) {
       return { result: 'busy' };
     }
 
+    /* Auto-link or create Customer record */
+    let customerId = null;
+    let assignedAgentId = null;
+    try {
+      const existingCustomer = await db.get(
+        'SELECT id, assigned_agent_id FROM customers WHERE phone = ? OR email = ? LIMIT 1',
+        [phone, email]
+      );
+      if (existingCustomer) {
+        customerId = existingCustomer.id;
+        assignedAgentId = existingCustomer.assigned_agent_id;
+      } else {
+        const newCustomer = await db.run(
+          'INSERT INTO customers (name, phone, email, notes) VALUES (?, ?, ?, ?)',
+          [name, phone, email, `Initial enquiry via ${source} for ${service}`]
+        );
+        customerId = newCustomer.lastID;
+      }
+
+      /* If inquiry is for a specific listing, check if property has an assigned agent */
+      if (!assignedAgentId && propertyId) {
+        const prop = await db.get('SELECT agent_id FROM properties WHERE id = ?', [propertyId]);
+        if (prop && prop.agent_id) assignedAgentId = prop.agent_id;
+      }
+
+      if (!assignedAgentId) {
+        const defaultAgent = await db.get('SELECT id FROM users WHERE role = "agent" AND status = "active" LIMIT 1');
+        if (defaultAgent) assignedAgentId = defaultAgent.id;
+      }
+    } catch (_) { /* gracefully continue if customers table not available */ }
+
     const saved = await db.run(
       `INSERT INTO inquiries
-       (name, phone, email, service, budget, location, message, property_id, property_title, property_location)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [name, phone, email, service, budget, location, message, propertyId, propertyTitle, propertyLocation]
+       (name, phone, email, service, budget, location, message, property_id, property_title, property_location, customer_id, assigned_agent_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, phone, email, service, budget, location, message, propertyId, propertyTitle, propertyLocation, customerId, assignedAgentId]
     );
+
+    const savedInquiry = {
+      id: saved.lastID,
+      name,
+      phone,
+      email,
+      service,
+      budget,
+      location,
+      message,
+      property_id: propertyId,
+      property_title: propertyTitle,
+      property_location: propertyLocation,
+      customer_id: customerId,
+      assigned_agent_id: assignedAgentId
+    };
+
     log.info('enquiry saved', { enquiry: saved.lastID, source });
+
+    /* Dispatch notifications asynchronously */
+    if (notifications && typeof notifications.notifyNewInquiry === 'function') {
+      notifications.notifyNewInquiry(savedInquiry).catch(err => {
+        if (log) log.error('notification dispatch failed', { error: err.message });
+      });
+    }
+
     return { result: 'saved', id: saved.lastID };
   }
 

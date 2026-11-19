@@ -14,7 +14,7 @@ const siteConfig = {
 
     // WhatsApp number: digits only, with country code, no + or spaces.
     // Example: 23276123456
-    whatsapp: "23276673667",
+    whatsapp: "23276683667",
 
     // Add your real email between the quotes, e.g. "name@gmail.com"
     email: "dannyagento1@gmail.com",

@@ -18,10 +18,75 @@ function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
-function createPages({ publicDir, config, log }) {
+function createPages({ publicDir, config, log, db }) {
   const textCache = new Map();
   const parsedCache = new Map();
   const versionCache = new Map();
+  let dbPropertiesCache = null;
+  let dbSettingsCache = null;
+
+  async function refreshFromDb() {
+    if (!db) return;
+    try {
+      /* Refresh site settings */
+      const settingsRows = await db.all('SELECT key, value FROM site_settings');
+      if (settingsRows && settingsRows.length > 0) {
+        const setMap = {};
+        settingsRows.forEach(r => { setMap[r.key] = r.value; });
+        dbSettingsCache = setMap;
+      }
+
+      /* Refresh properties */
+      const props = await db.all('SELECT * FROM properties WHERE published = 1 AND status != "archived" ORDER BY id ASC');
+      if (props && props.length > 0) {
+        const ids = props.map(p => p.id);
+        const placeholders = ids.map(() => '?').join(',');
+        const images = await db.all(
+          `SELECT * FROM property_images WHERE property_id IN (${placeholders}) ORDER BY is_cover DESC, sort_order ASC, id ASC`,
+          ids
+        );
+        const imgMap = new Map();
+        images.forEach(img => {
+          if (!imgMap.has(img.property_id)) imgMap.set(img.property_id, []);
+          imgMap.get(img.property_id).push(img.url);
+        });
+
+        const list = props.map(p => {
+          const pImages = imgMap.get(p.id) || ['images/property-1.jpg'];
+          return {
+            id: p.id,
+            title: p.title,
+            location: p.location,
+            type: p.type,
+            purpose: p.purpose,
+            price: p.price_display,
+            beds: p.beds || 0,
+            baths: p.baths || 0,
+            area: p.area || '',
+            image: pImages[0] || 'images/property-1.jpg',
+            images: pImages,
+            description: p.description,
+            status: p.status || 'available'
+          };
+        });
+
+        /* Group into sections */
+        const sections = [
+          { title: 'Apartments for Rent', ids: list.filter(p => p.type === 'Apartment' && p.purpose === 'Rent').map(p => p.id) },
+          { title: 'Houses for Sale', ids: list.filter(p => p.type === 'House' && p.purpose === 'Buy').map(p => p.id) },
+          { title: 'Commercial Offices for Rent', ids: list.filter(p => p.type === 'Commercial').map(p => p.id) },
+          { title: 'Land for Sale', ids: list.filter(p => p.type === 'Land').map(p => p.id) }
+        ].filter(s => s.ids.length > 0);
+
+        list.sections = sections;
+        dbPropertiesCache = list;
+      }
+    } catch (_) { /* continue using fallback */ }
+  }
+
+  if (db) {
+    refreshFromDb();
+  }
 
   /* Reads a file, keeping the text until the file changes on disk. */
   function readText(rel) {
@@ -55,14 +120,38 @@ function createPages({ publicDir, config, log }) {
   const DEFAULT_SETTINGS = { businessName: 'Property Agent', phone: '', whatsapp: '', email: '', address: '' };
 
   function settings() {
-    return parsed('js/site-config.js', text => {
+    const fileSettings = parsed('js/site-config.js', text => {
       const match = /const siteConfig = (\{[\s\S]*?\n\});/.exec(text);
       if (!match) throw new Error('siteConfig not found');
       return { ...DEFAULT_SETTINGS, ...vm.runInNewContext('(' + match[1] + ')', {}, { timeout: 1000 }) };
     }, DEFAULT_SETTINGS);
+
+    if (dbSettingsCache) {
+      return {
+        ...fileSettings,
+        businessName: dbSettingsCache.businessName || fileSettings.businessName,
+        phone: dbSettingsCache.phone || fileSettings.phone,
+        whatsapp: dbSettingsCache.whatsapp || fileSettings.whatsapp,
+        email: dbSettingsCache.email || fileSettings.email,
+        address: dbSettingsCache.address || fileSettings.address,
+        openingHours: dbSettingsCache.openingHours || fileSettings.openingHours,
+        bannerText: dbSettingsCache.bannerText || '',
+        bannerActive: dbSettingsCache.bannerActive === '1',
+        social: {
+          facebook: dbSettingsCache.facebook || (fileSettings.social && fileSettings.social.facebook) || '',
+          instagram: dbSettingsCache.instagram || (fileSettings.social && fileSettings.social.instagram) || '',
+          whatsappChannel: dbSettingsCache.whatsappChannel || (fileSettings.social && fileSettings.social.whatsappChannel) || ''
+        }
+      };
+    }
+
+    return fileSettings;
   }
 
   function properties() {
+    if (dbPropertiesCache && dbPropertiesCache.length > 0) {
+      return dbPropertiesCache;
+    }
     return parsed('js/properties.js', text => {
       const sandbox = {};
       vm.createContext(sandbox);
@@ -142,10 +231,17 @@ function createPages({ publicDir, config, log }) {
     });
   }
 
+  function bannerHtml() {
+    const s = settings();
+    if (!s.bannerActive || !s.bannerText) return '';
+    return `<aside id="siteAnnouncementBanner" class="bg-amber-600 text-white text-xs sm:text-sm text-center py-2.5 px-4 font-semibold flex items-center justify-center gap-2 relative z-50"><span>${escapeHtml(s.bannerText)}</span></aside>`;
+  }
+
   function applyTokens(html, extra = {}) {
     const tokens = {
       '%%CONTACT_LINKS%%': () => contactLinksHtml(),
       '%%NOSCRIPT_LISTINGS%%': () => listingsHtml(),
+      '%%BANNER_HTML%%': () => bannerHtml(),
       ...extra
     };
     return html.replace(/%%[A-Z_]+%%/g, token => (tokens[token] ? tokens[token]() : ''));
@@ -216,7 +312,7 @@ function createPages({ publicDir, config, log }) {
     return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`;
   }
 
-  return { isPage, render, renderPropertyPage, renderError, sitemapXml, settings, properties, baseUrl };
+  return { isPage, render, renderPropertyPage, renderError, sitemapXml, settings, properties, baseUrl, refreshFromDb };
 }
 
 module.exports = { createPages, escapeHtml };

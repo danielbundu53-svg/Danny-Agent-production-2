@@ -5,6 +5,9 @@ const searchInput = document.getElementById("searchInput");
 const purposeFilter = document.getElementById("purposeFilter");
 const typeFilter = document.getElementById("typeFilter");
 const locationFilter = document.getElementById("locationFilter");
+const bedroomsFilter = document.getElementById("bedroomsFilter");
+const availabilityFilter = document.getElementById("availabilityFilter");
+const priceFilter = document.getElementById("priceFilter");
 const propertyGrid = document.getElementById("propertyGrid");
 const resultsTitle = document.getElementById("resultsTitle");
 const resultsCount = document.getElementById("resultsCount");
@@ -16,6 +19,13 @@ const sectionNav = document.getElementById("sectionNav");
 function cardHtml(property, favorites) {
         const saved = favorites.includes(property.id);
         const detailUrl = `property-detail.html?id=${encodeURIComponent(property.id)}`;
+        const statusBadge = property.status === 'under_offer'
+            ? '<span class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Under Offer</span>'
+            : property.status === 'sold'
+            ? '<span class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Sold</span>'
+            : property.status === 'rented'
+            ? '<span class="bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Rented</span>'
+            : '';
 
         return `
         <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 border border-gray-100 group">
@@ -31,7 +41,8 @@ function cardHtml(property, favorites) {
                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     >
                 </a>
-                <div class="absolute top-4 left-4 flex gap-2">
+                <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                    ${statusBadge}
                     <span class="bg-white/95 text-navy text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">${esc(property.purpose)}</span>
                     <span class="bg-navy/95 text-white text-xs font-bold px-3 py-1.5 rounded-full">${esc(property.type)}</span>
                 </div>
@@ -138,20 +149,46 @@ function filterProperties() {
     const purpose = purposeFilter.value;
     const type = typeFilter.value;
     const location = locationFilter.value.toLowerCase().trim();
+    const bedrooms = bedroomsFilter ? bedroomsFilter.value : "";
+    const availability = availabilityFilter ? availabilityFilter.value : "";
+    const priceRange = priceFilter ? priceFilter.value : "";
 
     const filtered = properties.filter(property => {
         const searchableText =
             `${property.title} ${property.location} ${property.type} ${property.purpose} ${property.description}`.toLowerCase();
 
+        let matchesBedrooms = true;
+        if (bedrooms) {
+            matchesBedrooms = property.beds && Number(property.beds) >= Number(bedrooms);
+        }
+
+        let matchesAvailability = true;
+        if (availability) {
+            const propStatus = property.status || "available";
+            matchesAvailability = propStatus === availability;
+        }
+
+        let matchesPrice = true;
+        if (priceRange) {
+            const digits = Number(String(property.price || "").replace(/[^0-9.]/g, ""));
+            if (priceRange === "0-1000") matchesPrice = digits > 0 && digits <= 1000;
+            else if (priceRange === "1000-3000") matchesPrice = digits >= 1000 && digits <= 3000;
+            else if (priceRange === "3000-5000") matchesPrice = digits >= 3000 && digits <= 5000;
+            else if (priceRange === "5000+") matchesPrice = digits >= 5000;
+        }
+
         return (
             (!search || searchableText.includes(search)) &&
             (!purpose || property.purpose === purpose) &&
             (!type || property.type === type) &&
-            (!location || property.location.toLowerCase().includes(location))
+            (!location || property.location.toLowerCase().includes(location)) &&
+            matchesBedrooms &&
+            matchesAvailability &&
+            matchesPrice
         );
     });
 
-    const hasFilters = search || purpose || type || location;
+    const hasFilters = search || purpose || type || location || bedrooms || availability || priceRange;
     resultsTitle.textContent = hasFilters ? "Filtered Properties" : "All Properties";
     renderProperties(filtered);
 }
@@ -161,6 +198,9 @@ function clearAllFilters() {
     purposeFilter.value = "";
     typeFilter.value = "";
     locationFilter.value = "";
+    if (bedroomsFilter) bedroomsFilter.value = "";
+    if (availabilityFilter) availabilityFilter.value = "";
+    if (priceFilter) priceFilter.value = "";
     resultsTitle.textContent = "All Properties";
     renderProperties(properties);
 }
@@ -171,6 +211,9 @@ searchInput.addEventListener("input", filterProperties);
 locationFilter.addEventListener("input", filterProperties);
 purposeFilter.addEventListener("change", filterProperties);
 typeFilter.addEventListener("change", filterProperties);
+if (bedroomsFilter) bedroomsFilter.addEventListener("change", filterProperties);
+if (availabilityFilter) availabilityFilter.addEventListener("change", filterProperties);
+if (priceFilter) priceFilter.addEventListener("change", filterProperties);
 
 [searchInput, locationFilter].forEach(input => {
     input.addEventListener("keydown", event => {
@@ -186,7 +229,7 @@ typeFilter.addEventListener("change", filterProperties);
    Example: properties.html?purpose=rent&type=apartment&location=lumley
 ===================================== */
 function presetSelect(select, wanted) {
-    if (!wanted) return;
+    if (!wanted || !select) return;
     const match = [...select.options].find(
         option => option.value.toLowerCase() === wanted.toLowerCase()
     );
@@ -196,6 +239,8 @@ function presetSelect(select, wanted) {
 const params = new URLSearchParams(window.location.search);
 presetSelect(purposeFilter, params.get("purpose"));
 presetSelect(typeFilter, params.get("type"));
+presetSelect(bedroomsFilter, params.get("beds"));
+presetSelect(availabilityFilter, params.get("status"));
 locationFilter.value = (params.get("location") || "").slice(0, 100);
 searchInput.value = (params.get("q") || "").slice(0, 100);
 

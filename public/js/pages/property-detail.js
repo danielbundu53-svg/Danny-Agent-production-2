@@ -50,6 +50,22 @@ function showProperty(property) {
     setText("infoLocation", property.location);
     setText("infoArea", property.area);
 
+    const statusBadgeEl = document.getElementById("statusBadge");
+    if (statusBadgeEl) {
+        if (property.status === "under_offer") {
+            statusBadgeEl.textContent = "Under Offer";
+            statusBadgeEl.className = "bg-amber-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow";
+        } else if (property.status === "sold") {
+            statusBadgeEl.textContent = "Sold";
+            statusBadgeEl.className = "bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow";
+        } else if (property.status === "rented") {
+            statusBadgeEl.textContent = "Rented";
+            statusBadgeEl.className = "bg-slate-700 text-white px-4 py-2 rounded-full text-sm font-bold shadow";
+        } else {
+            statusBadgeEl.className = "hidden";
+        }
+    }
+
     /* ---------- Enquiry buttons ---------- */
     const enquiryUrl = `contact.html?property=${encodeURIComponent(property.id)}`;
     document.getElementById("propertyEnquiryButton").href = enquiryUrl;

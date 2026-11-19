@@ -41,7 +41,7 @@
     <header
         class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100"
     >
-
+        %%BANNER_HTML%%
         <div
             class="max-w-7xl mx-auto px-6 lg:px-8"
         >
@@ -278,10 +278,13 @@
                                     1 / 4
                                 </div>
 
-                                <span id="purposeBadge"
-                                    class="absolute top-5 left-5 bg-white text-navy px-4 py-2 rounded-full text-sm font-bold">
-                                    For Sale
-                                </span>
+                                <div class="absolute top-5 left-5 flex gap-2 flex-wrap items-center">
+                                    <span id="statusBadge" class="hidden text-white px-4 py-2 rounded-full text-sm font-bold shadow"></span>
+                                    <span id="purposeBadge"
+                                        class="bg-white text-navy px-4 py-2 rounded-full text-sm font-bold">
+                                        For Sale
+                                    </span>
+                                </div>
 
                                 <button id="favoriteButton"
                                     class="absolute top-5 right-5 w-11 h-11 bg-white rounded-full flex items-center justify-center text-gray-500 hover:text-red-500 transition shadow"
@@ -551,6 +554,5 @@
     <script src="js/site.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/pages/property-detail.js"></script>
-
-
+</body>
 </html>

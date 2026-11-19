@@ -41,7 +41,7 @@
     <header
         class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100"
     >
-
+        %%BANNER_HTML%%
         <div
             class="max-w-7xl mx-auto px-6 lg:px-8"
         >
@@ -335,11 +335,47 @@
                             id="locationFilter"
                             type="text"
                             placeholder="e.g. Freetown"
-                            class="w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-navy"
+                            class="w-full border border-gray-200 rounded-lg px-4 py-3 text-base outline-none focus:ring-2 focus:ring-navy"
                         >
 
                     </div>
 
+                </div>
+
+                <!-- Advanced Filters: Bedrooms, Availability, Price -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-100">
+                    <div>
+                        <label for="bedroomsFilter" class="block text-sm font-semibold text-gray-700 mb-2">Bedrooms</label>
+                        <select id="bedroomsFilter" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-base bg-white outline-none focus:ring-2 focus:ring-navy">
+                            <option value="">Any Bedrooms</option>
+                            <option value="1">1+ Bedrooms</option>
+                            <option value="2">2+ Bedrooms</option>
+                            <option value="3">3+ Bedrooms</option>
+                            <option value="4">4+ Bedrooms</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="availabilityFilter" class="block text-sm font-semibold text-gray-700 mb-2">Availability</label>
+                        <select id="availabilityFilter" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-base bg-white outline-none focus:ring-2 focus:ring-navy">
+                            <option value="">All Listings</option>
+                            <option value="available">Available</option>
+                            <option value="under_offer">Under Offer</option>
+                            <option value="sold">Sold</option>
+                            <option value="rented">Rented</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="priceFilter" class="block text-sm font-semibold text-gray-700 mb-2">Price Budget</label>
+                        <select id="priceFilter" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-base bg-white outline-none focus:ring-2 focus:ring-navy">
+                            <option value="">Any Budget</option>
+                            <option value="0-1000">Under $1,000</option>
+                            <option value="1000-3000">$1,000 – $3,000</option>
+                            <option value="3000-5000">$3,000 – $5,000</option>
+                            <option value="5000+">$5,000+ / Luxury</option>
+                        </select>
+                    </div>
                 </div>
 
 
@@ -533,6 +569,5 @@
     <script src="js/site.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/pages/properties.js"></script>
-
-
+</body>
 </html>

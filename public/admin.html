@@ -4,73 +4,681 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Admin Enquiries</title>
+  <title>Admin Portal | Danny Agent</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="icon" href="/favicon.ico" sizes="48x48">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta name="theme-color" content="#123B63">
-    <link rel="stylesheet" href="css/site.css">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#123B63">
+  <link rel="stylesheet" href="css/site.css">
 </head>
-<body class="bg-gray-50 text-gray-900">
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-      <div>
-        <p class="text-sm font-bold tracking-widest text-amber-600 uppercase" id="brand">Admin</p>
-        <h1 class="text-3xl font-bold text-slate-800">Property Enquiries</h1>
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-10 h-10 rounded-xl bg-navy text-white flex items-center justify-center font-bold text-lg hover:bg-darknavy transition" title="Go to Website">
+          <i data-lucide="home" class="w-5 h-5"></i>
+        </a>
+        <div>
+          <p class="text-xs font-bold tracking-widest text-amber-600 uppercase" id="brand">Danny Agent</p>
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800">Admin Operations Portal</h1>
+        </div>
       </div>
 
-      <form id="loginForm" class="flex gap-2" autocomplete="off">
-        <label for="adminKey" class="sr-only">Admin key</label>
-        <input id="adminKey" type="password" placeholder="Admin key" autocomplete="current-password" class="border rounded-lg px-4 py-2 w-full md:w-64">
-        <button id="loadBtn" type="submit" class="bg-slate-800 text-white rounded-lg px-5 py-2 font-semibold hover:bg-slate-700">Load</button>
+      <!-- Authentication Login Bar -->
+      <form id="loginForm" class="flex flex-wrap sm:flex-nowrap gap-2 items-center" autocomplete="off">
+        <label for="adminKey" class="sr-only">Admin key or Password</label>
+        <input id="adminKey" type="password" placeholder="Admin key or password" autocomplete="current-password" class="border border-gray-300 rounded-lg px-4 py-2.5 text-base w-full sm:w-64 focus:ring-2 focus:ring-navy outline-none">
+        <button id="loadBtn" type="submit" class="bg-slate-800 text-white rounded-lg px-5 py-2.5 font-semibold text-base hover:bg-slate-700 min-h-[44px] shrink-0 transition">Load</button>
       </form>
 
-      <div id="sessionBar" class="hidden flex gap-2">
-        <button id="refreshBtn" type="button" class="border rounded-lg px-4 py-2 font-semibold bg-white hover:bg-gray-50">Refresh</button>
-        <button id="signOutBtn" type="button" class="border rounded-lg px-4 py-2 font-semibold bg-white hover:bg-gray-50">Sign out</button>
+      <!-- Authenticated Session Bar -->
+      <div id="sessionBar" class="hidden flex flex-wrap items-center gap-3">
+        <div id="userBadge" class="hidden sm:flex items-center gap-2 bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg text-sm font-medium border border-slate-200">
+          <i data-lucide="user" class="w-4 h-4 text-amber-600"></i>
+          <span id="userNameDisplay">Admin</span>
+          <span id="userRoleBadge" class="bg-navy text-white text-xs px-2 py-0.5 rounded font-bold uppercase">admin</span>
+        </div>
+        <button id="refreshBtn" type="button" class="inline-flex items-center gap-1.5 border border-gray-300 rounded-lg px-4 py-2 font-semibold text-base bg-white hover:bg-gray-50 min-h-[44px] transition" title="Refresh data">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          <span>Refresh</span>
+        </button>
+        <button id="signOutBtn" type="button" class="inline-flex items-center gap-1.5 border border-red-200 rounded-lg px-4 py-2 font-semibold text-base text-red-600 bg-white hover:bg-red-50 min-h-[44px] transition">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Sign out</span>
+        </button>
       </div>
     </div>
+  </header>
 
-    <p id="status" class="mb-4 text-sm" role="status" aria-live="polite"></p>
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
+    <!-- Status Toast / Alert -->
+    <p id="status" class="mb-4 text-base" role="status" aria-live="polite"></p>
 
-    <div id="tools" class="hidden mb-4 grid gap-3 sm:grid-cols-3">
-      <div class="sm:col-span-2">
-        <label for="searchBox" class="sr-only">Search enquiries</label>
-        <input id="searchBox" type="search" placeholder="Search name, phone, email, property or message" class="w-full border rounded-lg px-4 py-2 bg-white">
-      </div>
-      <div>
-        <label for="statusFilter" class="sr-only">Filter by status</label>
-        <select id="statusFilter" class="w-full border rounded-lg px-4 py-2 bg-white">
-          <option value="">All statuses</option>
-          <option value="new">New</option>
-          <option value="contacted">Contacted</option>
-          <option value="qualified">Qualified</option>
-          <option value="closed">Closed</option>
-        </select>
-      </div>
-    </div>
+    <!-- Admin Portal Views Container -->
+    <div id="adminPortal" class="hidden">
+      <!-- Tabs Navigation -->
+      <nav id="adminTabs" class="flex overflow-x-auto space-x-2 border-b border-gray-200 pb-2 mb-6" aria-label="Admin Sections">
+        <button type="button" data-tab="inquiries" class="tab-btn active px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap bg-navy text-white transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          <span>Enquiries &amp; Leads</span>
+          <span id="inquiryCountBadge" class="bg-amber-500 text-slate-900 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+        <button type="button" data-tab="overview" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Overview &amp; Analytics</span>
+        </button>
+        <button type="button" data-tab="properties" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="building" class="w-4 h-4"></i>
+          <span>Properties</span>
+          <span id="propertyCountBadge" class="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+        <button type="button" data-tab="media" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="image" class="w-4 h-4"></i>
+          <span>Photos &amp; Gallery</span>
+        </button>
+        <button type="button" data-tab="customers" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="users" class="w-4 h-4"></i>
+          <span>Customers CRM</span>
+        </button>
+        <button type="button" data-tab="users" data-role-req="admin" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="shield" class="w-4 h-4"></i>
+          <span>Team &amp; Access</span>
+        </button>
+        <button type="button" data-tab="settings" data-role-req="admin" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+          <span>Site Settings &amp; Banner</span>
+        </button>
+        <button type="button" data-tab="logs" data-role-req="admin" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap text-gray-600 hover:text-navy hover:bg-gray-100 transition flex items-center gap-2 min-h-[44px]">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>System &amp; Notification Logs</span>
+        </button>
+      </nav>
 
-    <div class="bg-white rounded-2xl shadow-sm border overflow-x-auto">
-      <table class="min-w-full text-sm">
-        <thead class="bg-slate-50">
-          <tr>
-            <th scope="col" class="text-left p-4">Date</th>
-            <th scope="col" class="text-left p-4">Customer</th>
-            <th scope="col" class="text-left p-4">Property</th>
-            <th scope="col" class="text-left p-4">Service</th>
-            <th scope="col" class="text-left p-4">Message</th>
-            <th scope="col" class="text-left p-4">Status</th>
-          </tr>
-        </thead>
-        <tbody id="inquiryRows">
-          <tr><td colspan="6" class="p-8 text-left text-gray-500">Enter your admin key and press Load.</td></tr>
-        </tbody>
-      </table>
+      <!-- ================= TAB 1: INQUIRIES & LEADS ================= -->
+      <section id="tab-inquiries-content" class="tab-panel">
+        <div id="tools" class="mb-4 grid gap-3 sm:grid-cols-4">
+          <div class="sm:col-span-2">
+            <label for="searchBox" class="sr-only">Search enquiries</label>
+            <input id="searchBox" type="search" placeholder="Search name, phone, email, property or message" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="statusFilter" class="sr-only">Filter by status</label>
+            <select id="statusFilter" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+              <option value="">All statuses</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+          <div>
+            <label for="serviceFilter" class="sr-only">Filter by service</label>
+            <select id="serviceFilter" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+              <option value="">All services</option>
+              <option value="buy">Buying</option>
+              <option value="rent">Renting</option>
+              <option value="sell">Selling</option>
+              <option value="investment">Investment</option>
+              <option value="management">Management</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
+          <table class="min-w-full text-base divide-y divide-gray-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Date &amp; ID</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Customer</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Property / Request</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Service</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Message &amp; Notes</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Assigned Agent</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Status</th>
+              </tr>
+            </thead>
+            <tbody id="inquiryRows" class="divide-y divide-gray-200">
+              <tr><td colspan="7" class="p-8 text-left text-gray-500">Enter your admin key and press Load.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= TAB 2: OVERVIEW & ANALYTICS ================= -->
+      <section id="tab-overview-content" class="tab-panel hidden space-y-6">
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-gray-500">Total Properties</span>
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-navy flex items-center justify-center">
+                <i data-lucide="building" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <p id="statTotalProps" class="text-3xl font-bold text-slate-800 mt-2">0</p>
+            <p class="text-xs text-gray-500 mt-1"><span id="statActiveProps" class="text-emerald-600 font-bold">0</span> active &amp; published</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-gray-500">Total Enquiries</span>
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <i data-lucide="mail" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <p id="statTotalInquiries" class="text-3xl font-bold text-slate-800 mt-2">0</p>
+            <p class="text-xs text-gray-500 mt-1"><span id="statNewInquiries" class="text-amber-600 font-bold">0</span> awaiting response</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-gray-500">Customers CRM</span>
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <p id="statTotalCustomers" class="text-3xl font-bold text-slate-800 mt-2">0</p>
+            <p class="text-xs text-gray-500 mt-1">Unique buyer &amp; renter profiles</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold text-gray-500">Deals Closed</span>
+              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <p id="statClosedDeals" class="text-3xl font-bold text-slate-800 mt-2">0</p>
+            <p class="text-xs text-gray-500 mt-1"><span id="statSoldProps">0</span> sold &middot; <span id="statRentedProps">0</span> rented</p>
+          </div>
+        </div>
+
+        <!-- Breakdown Charts & Distributions -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-5 h-5 text-navy"></i>
+              Enquiry Status Distribution
+            </h3>
+            <div id="statusDistributionBars" class="space-y-3">
+              <!-- populated dynamically -->
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <i data-lucide="bar-chart-2" class="w-5 h-5 text-navy"></i>
+              Properties by Category
+            </h3>
+            <div id="propertyTypeBars" class="space-y-3">
+              <!-- populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i data-lucide="clock" class="w-5 h-5 text-navy"></i>
+            Recent System Activity
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm divide-y divide-gray-200">
+              <thead class="bg-slate-50">
+                <tr>
+                  <th class="text-left p-3 font-semibold text-slate-600">Timestamp</th>
+                  <th class="text-left p-3 font-semibold text-slate-600">User</th>
+                  <th class="text-left p-3 font-semibold text-slate-600">Action</th>
+                  <th class="text-left p-3 font-semibold text-slate-600">Target</th>
+                  <th class="text-left p-3 font-semibold text-slate-600">Details</th>
+                </tr>
+              </thead>
+              <tbody id="recentActivityRows" class="divide-y divide-gray-100">
+                <tr><td colspan="5" class="p-4 text-center text-gray-500">No recent activity recorded.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: PROPERTIES MANAGEMENT ================= -->
+      <section id="tab-properties-content" class="tab-panel hidden space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex flex-wrap gap-2 items-center flex-grow">
+            <input id="propSearchBox" type="search" placeholder="Search title or location..." class="border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white w-full sm:w-64 focus:ring-2 focus:ring-navy outline-none">
+            <select id="propPurposeFilter" class="border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white">
+              <option value="">All Purposes</option>
+              <option value="Buy">For Sale</option>
+              <option value="Rent">For Rent</option>
+            </select>
+            <select id="propTypeFilter" class="border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white">
+              <option value="">All Types</option>
+              <option value="House">House</option>
+              <option value="Apartment">Apartment</option>
+              <option value="Land">Land</option>
+              <option value="Commercial">Commercial</option>
+            </select>
+            <select id="propStatusFilter" class="border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white">
+              <option value="">All Statuses</option>
+              <option value="available">Available</option>
+              <option value="under_offer">Under Offer</option>
+              <option value="sold">Sold</option>
+              <option value="rented">Rented</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+          <button id="addPropertyBtn" type="button" class="bg-navy text-white px-5 py-2.5 rounded-lg font-semibold text-base hover:bg-darknavy transition inline-flex items-center gap-2 min-h-[44px] shrink-0">
+            <i data-lucide="plus" class="w-5 h-5"></i>
+            <span>Add Property</span>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
+          <table class="min-w-full text-base divide-y divide-gray-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Photo</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Title &amp; Location</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Type &amp; Purpose</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Price</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Status</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Visibility</th>
+                <th scope="col" class="text-right p-4 font-semibold text-slate-700">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="propertyRows" class="divide-y divide-gray-200">
+              <tr><td colspan="7" class="p-8 text-center text-gray-500">Loading properties...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: PHOTOS & GALLERY ================= -->
+      <section id="tab-media-content" class="tab-panel hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-800">Property Photo Gallery Manager</h3>
+              <p class="text-sm text-gray-500">Upload high-resolution property photos, set cover photo, or reorder images.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <label for="mediaPropertySelect" class="text-sm font-semibold text-slate-700">Select Property:</label>
+              <select id="mediaPropertySelect" class="border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none min-w-[240px]">
+                <option value="">Select a property...</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Upload Dropzone -->
+          <div id="mediaUploadBox" class="border-2 border-dashed border-gray-300 hover:border-navy rounded-2xl p-8 text-center bg-gray-50 transition cursor-pointer">
+            <input type="file" id="mediaFileInput" accept="image/jpeg,image/png,image/webp" class="hidden">
+            <i data-lucide="upload-cloud" class="w-12 h-12 text-gray-400 mx-auto mb-3"></i>
+            <h4 class="text-base font-bold text-slate-800">Click to upload photo or drag &amp; drop</h4>
+            <p class="text-xs text-gray-500 mt-1">Accepts JPG, PNG, WEBP (auto-optimized via Sharp for mobile &amp; desktop performance)</p>
+            <p id="uploadStatusText" class="text-sm font-semibold text-navy mt-2"></p>
+          </div>
+
+          <!-- Existing Images Grid -->
+          <div id="mediaGalleryContainer">
+            <h4 class="text-base font-bold text-slate-800 mb-3">Property Images (<span id="mediaCount">0</span>)</h4>
+            <div id="mediaThumbnailsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 5: CUSTOMERS CRM ================= -->
+      <section id="tab-customers-content" class="tab-panel hidden space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <input id="customerSearchBox" type="search" placeholder="Search customer name, phone, email..." class="border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white w-full sm:w-80 focus:ring-2 focus:ring-navy outline-none">
+          <p id="customerTotalCount" class="text-sm text-gray-500 font-medium"></p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
+          <table class="min-w-full text-base divide-y divide-gray-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Customer Name</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Phone &amp; WhatsApp</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Email</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Total Enquiries</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Assigned Agent</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Created</th>
+                <th scope="col" class="text-right p-4 font-semibold text-slate-700">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="customerRows" class="divide-y divide-gray-200">
+              <tr><td colspan="7" class="p-8 text-center text-gray-500">Loading customers...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= TAB 6: TEAM & AGENTS ================= -->
+      <section id="tab-users-content" class="tab-panel hidden space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">Team &amp; Agent Accounts</h3>
+            <p class="text-sm text-gray-500">Manage administrator and real estate agent logins and permissions.</p>
+          </div>
+          <button id="addUserBtn" type="button" class="bg-navy text-white px-5 py-2.5 rounded-lg font-semibold text-base hover:bg-darknavy transition inline-flex items-center gap-2 min-h-[44px]">
+            <i data-lucide="user-plus" class="w-5 h-5"></i>
+            <span>Add Team Member</span>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
+          <table class="min-w-full text-base divide-y divide-gray-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Name &amp; Username</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Role</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Email</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Phone</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Status</th>
+                <th scope="col" class="text-left p-4 font-semibold text-slate-700">Joined</th>
+                <th scope="col" class="text-right p-4 font-semibold text-slate-700">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userRows" class="divide-y divide-gray-200">
+              <tr><td colspan="7" class="p-8 text-center text-gray-500">Loading team members...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= TAB 7: SITE SETTINGS & BANNER ================= -->
+      <section id="tab-settings-content" class="tab-panel hidden space-y-6">
+        <form id="settingsForm" class="space-y-6">
+          <!-- Announcement Banner -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div>
+                <h3 class="text-lg font-bold text-slate-800">Website Announcement Banner</h3>
+                <p class="text-sm text-gray-500">Top-of-page alert banner visible to all public visitors.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="settingBannerActive" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                <span class="ml-3 text-sm font-semibold text-gray-700">Active</span>
+              </label>
+            </div>
+            <div>
+              <label for="settingBannerText" class="block text-sm font-semibold text-slate-700 mb-1">Banner Announcement Text</label>
+              <input type="text" id="settingBannerText" placeholder="e.g. Special Holiday Promo: Zero booking fee on selected apartments in Aberdeen!" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+            </div>
+          </div>
+
+          <!-- Business NAP Information -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-slate-800 border-b border-gray-100 pb-3">Business Profile &amp; Contact Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="settingBusinessName" class="block text-sm font-semibold text-slate-700 mb-1">Business Name</label>
+                <input type="text" id="settingBusinessName" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+              </div>
+              <div>
+                <label for="settingPhone" class="block text-sm font-semibold text-slate-700 mb-1">Office Phone Number</label>
+                <input type="text" id="settingPhone" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+              </div>
+              <div>
+                <label for="settingWhatsApp" class="block text-sm font-semibold text-slate-700 mb-1">WhatsApp Number (e.g. 23276683667)</label>
+                <input type="text" id="settingWhatsApp" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+              </div>
+              <div>
+                <label for="settingEmail" class="block text-sm font-semibold text-slate-700 mb-1">Public Inquiries Email</label>
+                <input type="email" id="settingEmail" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+              </div>
+              <div class="md:col-span-2">
+                <label for="settingAddress" class="block text-sm font-semibold text-slate-700 mb-1">Physical Office Address</label>
+                <input type="text" id="settingAddress" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+              </div>
+              <div>
+                <label for="settingOpeningHours" class="block text-sm font-semibold text-slate-700 mb-1">Opening Hours</label>
+                <input type="text" id="settingOpeningHours" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Assistant Configuration -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-slate-800 border-b border-gray-100 pb-3">Claude AI Assistant Configuration</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="settingChatDailyLimit" class="block text-sm font-semibold text-slate-700 mb-1">Daily Chat Turns per IP</label>
+                <input type="number" id="settingChatDailyLimit" min="5" max="500" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+                <p class="text-xs text-gray-500 mt-1">Protects against automated bot scraping while allowing real visitors to browse.</p>
+              </div>
+              <div class="flex items-center">
+                <p class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-200 w-full">
+                  <span class="font-bold text-slate-800">AI Knowledge Status:</span> Connected directly to SQLite property database. Automatically recommends available listings matching user queries.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button id="saveSettingsBtn" type="submit" class="bg-navy text-white px-8 py-3 rounded-lg font-semibold text-base hover:bg-darknavy transition min-h-[44px]">
+              Save Settings
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= TAB 8: NOTIFICATION & AUDIT LOGS ================= -->
+      <section id="tab-logs-content" class="tab-panel hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-slate-800">Notification Dispatch History</h3>
+              <p class="text-sm text-gray-500">Every email and WhatsApp dispatch record with verified delivery status.</p>
+            </div>
+            <button id="refreshLogsBtn" type="button" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm font-semibold hover:bg-gray-50">Refresh Logs</button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-base divide-y divide-gray-200">
+              <thead class="bg-slate-50">
+                <tr>
+                  <th class="text-left p-3 font-semibold text-slate-700">Date</th>
+                  <th class="text-left p-3 font-semibold text-slate-700">Channel</th>
+                  <th class="text-left p-3 font-semibold text-slate-700">Recipient</th>
+                  <th class="text-left p-3 font-semibold text-slate-700">Event</th>
+                  <th class="text-left p-3 font-semibold text-slate-700">Status</th>
+                  <th class="text-left p-3 font-semibold text-slate-700">Details / Reason</th>
+                </tr>
+              </thead>
+              <tbody id="notificationLogRows" class="divide-y divide-gray-200">
+                <tr><td colspan="6" class="p-6 text-center text-gray-500">No dispatch records found.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
-  <script src="js/site-config.js"></script>
-  <script src="js/pages/admin.js"></script>
+  <!-- ================= MODALS ================= -->
 
+  <!-- Property Modal (Add & Edit) -->
+  <div id="propertyModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl space-y-4 my-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="propModalTitle" class="text-xl font-bold text-slate-800">Add Property</h3>
+        <button type="button" data-close-modal class="text-gray-400 hover:text-gray-600 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close modal">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <form id="propertyForm" class="space-y-4">
+        <input type="hidden" id="propId" value="">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2">
+            <label for="propTitleInput" class="block text-sm font-semibold text-slate-700 mb-1">Property Title *</label>
+            <input type="text" id="propTitleInput" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propSlugInput" class="block text-sm font-semibold text-slate-700 mb-1">URL Slug</label>
+            <input type="text" id="propSlugInput" placeholder="auto-generated from title" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propLocationInput" class="block text-sm font-semibold text-slate-700 mb-1">Location *</label>
+            <input type="text" id="propLocationInput" required placeholder="e.g. Wilberforce, Freetown" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propPurposeSelect" class="block text-sm font-semibold text-slate-700 mb-1">Purpose *</label>
+            <select id="propPurposeSelect" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+              <option value="Rent">Rent</option>
+              <option value="Buy">Buy (For Sale)</option>
+            </select>
+          </div>
+          <div>
+            <label for="propTypeSelect" class="block text-sm font-semibold text-slate-700 mb-1">Type *</label>
+            <select id="propTypeSelect" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+              <option value="House">House</option>
+              <option value="Apartment">Apartment</option>
+              <option value="Land">Land</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Office">Office</option>
+              <option value="Villa">Villa</option>
+            </select>
+          </div>
+          <div>
+            <label for="propPriceInput" class="block text-sm font-semibold text-slate-700 mb-1">Price * (Numeric or Display)</label>
+            <input type="text" id="propPriceInput" required placeholder="e.g. $2,500/month or $250,000" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propStatusSelect" class="block text-sm font-semibold text-slate-700 mb-1">Status</label>
+            <select id="propStatusSelect" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+              <option value="available">Available</option>
+              <option value="under_offer">Under Offer</option>
+              <option value="sold">Sold</option>
+              <option value="rented">Rented</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+          <div>
+            <label for="propBedsInput" class="block text-sm font-semibold text-slate-700 mb-1">Bedrooms</label>
+            <input type="number" id="propBedsInput" min="0" max="50" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propBathsInput" class="block text-sm font-semibold text-slate-700 mb-1">Bathrooms</label>
+            <input type="number" id="propBathsInput" min="0" max="50" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propAreaInput" class="block text-sm font-semibold text-slate-700 mb-1">Property Area</label>
+            <input type="text" id="propAreaInput" placeholder="e.g. 350 sqm or 3 town lots" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div>
+            <label for="propImageInput" class="block text-sm font-semibold text-slate-700 mb-1">Cover Photo Path / URL</label>
+            <input type="text" id="propImageInput" placeholder="images/apartment-1.webp" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div class="md:col-span-2">
+            <label for="propFeaturesInput" class="block text-sm font-semibold text-slate-700 mb-1">Key Features (comma separated)</label>
+            <input type="text" id="propFeaturesInput" placeholder="Ocean view, Backup Generator, Borehole Water, 24/7 Security" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+          </div>
+          <div class="md:col-span-2">
+            <label for="propDescInput" class="block text-sm font-semibold text-slate-700 mb-1">Detailed Description *</label>
+            <textarea id="propDescInput" rows="4" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none"></textarea>
+          </div>
+          <div class="flex items-center gap-6 md:col-span-2">
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="propFeaturedCheckbox" class="w-5 h-5 rounded text-navy focus:ring-navy">
+              <span class="text-sm font-semibold text-slate-700">Feature on Homepage</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="propPublishedCheckbox" checked class="w-5 h-5 rounded text-navy focus:ring-navy">
+              <span class="text-sm font-semibold text-slate-700">Published to Public Site</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t">
+          <button type="button" data-close-modal class="border border-gray-300 px-5 py-2.5 rounded-lg font-semibold text-base hover:bg-gray-50 min-h-[44px]">Cancel</button>
+          <button type="submit" id="savePropertyBtn" class="bg-navy text-white px-6 py-2.5 rounded-lg font-semibold text-base hover:bg-darknavy min-h-[44px]">Save Property</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Team Member Modal -->
+  <div id="userModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="userModalTitle" class="text-xl font-bold text-slate-800">Add Team Member</h3>
+        <button type="button" data-close-modal class="text-gray-400 hover:text-gray-600 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close modal">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <form id="userForm" class="space-y-4">
+        <div>
+          <label for="userNameInput" class="block text-sm font-semibold text-slate-700 mb-1">Full Name *</label>
+          <input type="text" id="userNameInput" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+        </div>
+        <div>
+          <label for="userUsernameInput" class="block text-sm font-semibold text-slate-700 mb-1">Username *</label>
+          <input type="text" id="userUsernameInput" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+        </div>
+        <div>
+          <label for="userEmailInput" class="block text-sm font-semibold text-slate-700 mb-1">Email *</label>
+          <input type="email" id="userEmailInput" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+        </div>
+        <div>
+          <label for="userPasswordInput" class="block text-sm font-semibold text-slate-700 mb-1">Password *</label>
+          <input type="password" id="userPasswordInput" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none">
+        </div>
+        <div>
+          <label for="userRoleSelect" class="block text-sm font-semibold text-slate-700 mb-1">Role</label>
+          <select id="userRoleSelect" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base bg-white focus:ring-2 focus:ring-navy outline-none">
+            <option value="agent">Agent (Listings &amp; Inquiries)</option>
+            <option value="admin">Administrator (Full Control)</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-3 pt-4 border-t">
+          <button type="button" data-close-modal class="border border-gray-300 px-5 py-2.5 rounded-lg font-semibold text-base hover:bg-gray-50 min-h-[44px]">Cancel</button>
+          <button type="submit" class="bg-navy text-white px-6 py-2.5 rounded-lg font-semibold text-base hover:bg-darknavy min-h-[44px]">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notes & Customer View Modal -->
+  <div id="notesModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 id="notesModalTitle" class="text-xl font-bold text-slate-800">Enquiry Notes</h3>
+        <button type="button" data-close-modal class="text-gray-400 hover:text-gray-600 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close modal">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div id="notesLeadInfo" class="bg-slate-50 p-4 rounded-xl text-sm space-y-1">
+          <!-- Filled dynamically -->
+        </div>
+        <div>
+          <label for="internalNotesText" class="block text-sm font-semibold text-slate-700 mb-1">Internal Agent Notes</label>
+          <textarea id="internalNotesText" rows="4" placeholder="Log call notes, viewing schedule, or client preferences..." class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-base focus:ring-2 focus:ring-navy outline-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-3 border-t">
+        <button type="button" data-close-modal class="border border-gray-300 px-5 py-2.5 rounded-lg font-semibold text-base hover:bg-gray-50 min-h-[44px]">Cancel</button>
+        <button type="button" id="saveNotesBtn" class="bg-navy text-white px-6 py-2.5 rounded-lg font-semibold text-base hover:bg-darknavy min-h-[44px]">Save Notes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/site-config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/pages/admin.js"></script>
+</body>
 </html>
