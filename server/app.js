@@ -133,6 +133,42 @@ async function createApp(config, { log, fetchImpl }) {
     res.json({ success: true, user: req.user });
   });
 
+  api.post('/auth/change-password', auth.requireAuth, async (req, res, next) => {
+    try {
+      const { currentPassword, newPassword } = req.body || {};
+      if (!currentPassword || !newPassword) {
+        return fail(res, 400, 'VALIDATION', 'Both current and new passwords are required.');
+      }
+      if (typeof newPassword !== 'string' || newPassword.length < 10) {
+        return fail(res, 400, 'VALIDATION', 'New password must be at least 10 characters long.');
+      }
+      if (currentPassword === newPassword) {
+        return fail(res, 400, 'VALIDATION', 'New password cannot be the same as your current password.');
+      }
+      const KNOWN_INSECURE_PASSWORDS = ['AdminDanny2026!SecureKey', 'AgentDanny2026!', 'admin', 'password', 'dannyagent', '12345678'];
+      if (KNOWN_INSECURE_PASSWORDS.some(p => p.toLowerCase() === newPassword.toLowerCase())) {
+        return fail(res, 400, 'VALIDATION', 'New password is too common or a default password. Please choose a stronger password.');
+      }
+
+      // Fetch user's current password hash from db
+      const user = await db.get('SELECT password_hash FROM users WHERE id = ?', [req.user.id]);
+      if (!user || !auth.verifyPassword(currentPassword, user.password_hash)) {
+        return fail(res, 400, 'VALIDATION', 'Current password is not correct.');
+      }
+
+      const newHash = auth.hashPassword(newPassword);
+      await db.run(
+        'UPDATE users SET password_hash = ?, must_change_password = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+        [newHash, req.user.id]
+      );
+      await db.run(
+        'INSERT INTO activity_logs (user_id, username, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)',
+        [req.user.id, req.user.username, 'password_change', 'user', req.user.id, 'User updated their password']
+      );
+      res.json({ success: true, message: 'Password changed successfully.' });
+    } catch (err) { next(err); }
+  });
+
   /* ---------- Properties (Public & Protected) ---------- */
   api.get('/properties', async (req, res, next) => {
     try {
@@ -358,7 +394,7 @@ async function createApp(config, { log, fetchImpl }) {
   });
 
   /* Analytics */
-  api.get('/analytics', auth.requireAuth, async (req, res, next) => {
+  api.get('/analytics', auth.requireRole('admin'), async (req, res, next) => {
     try {
       const totalProps = (await db.get('SELECT COUNT(*) as n FROM properties WHERE status != "archived"')).n;
       const activeProps = (await db.get('SELECT COUNT(*) as n FROM properties WHERE status = "available" AND published = 1')).n;
@@ -446,6 +482,9 @@ async function createApp(config, { log, fetchImpl }) {
       }
       if (!Number.isInteger(id) || id < 1) {
         return fail(res, 400, 'VALIDATION', 'Invalid inquiry id.');
+      }
+      if (assigned_agent_id !== undefined && req.user && req.user.role !== 'admin') {
+        return fail(res, 403, 'FORBIDDEN', 'Only administrators can reassign inquiries to agents.');
       }
       const existing = await db.get('SELECT id, status FROM inquiries WHERE id = ?', [id]);
       if (!existing) return fail(res, 404, 'NOT_FOUND', 'Enquiry not found.');

@@ -94,7 +94,8 @@ function createAuthService({ db, config, log }) {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        role: user.role
+        role: user.role,
+        mustChangePassword: Boolean(user.must_change_password)
       }
     };
   }
@@ -107,13 +108,17 @@ function createAuthService({ db, config, log }) {
   async function getUserByToken(token) {
     if (!token) return null;
     const row = await db.get(
-      `SELECT u.id, u.username, u.name, u.email, u.phone, u.role, u.status
+      `SELECT u.id, u.username, u.name, u.email, u.phone, u.role, u.status, u.must_change_password
        FROM sessions s
        JOIN users u ON s.user_id = u.id
        WHERE s.token = ? AND datetime(s.expires_at) > datetime('now') AND u.status = 'active'`,
       [token]
     );
-    return row || null;
+    if (!row) return null;
+    return {
+      ...row,
+      mustChangePassword: Boolean(row.must_change_password)
+    };
   }
 
   /* Middleware: verifies session token OR fallback legacy adminKey */

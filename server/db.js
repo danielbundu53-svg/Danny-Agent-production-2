@@ -102,6 +102,7 @@ async function openDatabase(dbPath, { seedInitial = true, rootDir = path.join(__
       phone TEXT,
       role TEXT NOT NULL DEFAULT 'agent',
       status TEXT NOT NULL DEFAULT 'active',
+      must_change_password INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
@@ -222,12 +223,13 @@ async function openDatabase(dbPath, { seedInitial = true, rootDir = path.join(__
     );
   `);
 
-  /* Upgrade inquiries and properties tables with relational columns */
+  /* Upgrade inquiries, properties and users tables with relational/security columns */
   await addColumnIfNotExists(store, 'inquiries', 'customer_id INTEGER REFERENCES customers(id) ON DELETE SET NULL', 'customer_id');
   await addColumnIfNotExists(store, 'inquiries', 'assigned_agent_id INTEGER REFERENCES users(id) ON DELETE SET NULL', 'assigned_agent_id');
   await addColumnIfNotExists(store, 'inquiries', 'notes TEXT', 'notes');
   await addColumnIfNotExists(store, 'inquiries', 'updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP', 'updated_at');
   await addColumnIfNotExists(store, 'properties', 'features TEXT', 'features');
+  await addColumnIfNotExists(store, 'users', 'must_change_password INTEGER NOT NULL DEFAULT 0', 'must_change_password');
 
   /* Defence in depth triggers for inquiries */
   const list = values => values.map(value => `'${value}'`).join(',');
@@ -248,26 +250,50 @@ async function openDatabase(dbPath, { seedInitial = true, rootDir = path.join(__
     await seedDatabase(store, rootDir, adminKey);
   }
 
+  /* In production, verify that no active account is using known default passwords */
+  if (process.env.NODE_ENV === 'production') {
+    const activeUsers = await store.all('SELECT id, username, password_hash, must_change_password FROM users WHERE status = "active"');
+    const KNOWN_DEFAULT_STRINGS = ['AdminDanny2026!SecureKey', 'AgentDanny2026!', 'admin', 'password', 'dannyagent', '12345678'];
+    for (const u of activeUsers) {
+      for (const insecure of KNOWN_DEFAULT_STRINGS) {
+        if (verifyPassword(insecure, u.password_hash)) {
+          throw new Error(`Production startup halted: User account "${u.username}" is configured with a known default password. Reset password before launching in production.`);
+        }
+      }
+    }
+  }
+
   return store;
 }
 
 async function seedDatabase(db, rootDir, adminKey) {
   try {
-    /* 1. Default Administrator and Agent accounts */
+    /* 1. Initial Administrator and Agent accounts */
     const userCount = (await db.get('SELECT COUNT(*) AS n FROM users')).n;
     if (userCount === 0) {
-      const defaultAdminPass = adminKey || process.env.ADMIN_KEY || 'AdminDanny2026!SecureKey';
-      const adminPassHash = hashPassword(defaultAdminPass);
+      const isProd = process.env.NODE_ENV === 'production';
+      let adminPass = adminKey || process.env.ADMIN_KEY;
+      if (isProd) {
+        if (!adminPass || adminPass.length < 24) {
+          throw new Error('Cannot seed database in production without a secure ADMIN_KEY (min 24 characters).');
+        }
+      } else {
+        adminPass = adminPass || 'AdminDanny2026!SecureKey';
+      }
+
+      const adminPassHash = hashPassword(adminPass);
       await db.run(
-        `INSERT INTO users (username, password_hash, name, email, phone, role, status)
-         VALUES (?, ?, ?, ?, ?, 'admin', 'active')`,
+        `INSERT INTO users (username, password_hash, name, email, phone, role, status, must_change_password)
+         VALUES (?, ?, ?, ?, ?, 'admin', 'active', 1)`,
         ['admin', adminPassHash, 'Head Administrator', 'admin@dannyagent.sl', '+232 76 683667']
       );
 
-      const agentPassHash = hashPassword('AgentDanny2026!');
+      // In production, generate an unguessable 32-char hex password. In dev/test, use AgentDanny2026!
+      const agentPass = isProd ? crypto.randomBytes(16).toString('hex') : 'AgentDanny2026!';
+      const agentPassHash = hashPassword(agentPass);
       await db.run(
-        `INSERT INTO users (username, password_hash, name, email, phone, role, status)
-         VALUES (?, ?, ?, ?, ?, 'agent', 'active')`,
+        `INSERT INTO users (username, password_hash, name, email, phone, role, status, must_change_password)
+         VALUES (?, ?, ?, ?, ?, 'agent', 'active', 1)`,
         ['danny.agent', agentPassHash, 'Danny Senior Agent', 'dannyagento1@gmail.com', '+232 76 683667']
       );
     }

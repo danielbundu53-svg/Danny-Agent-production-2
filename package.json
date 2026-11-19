@@ -10,7 +10,7 @@
     "build": "node scripts/build.js",
     "backup": "node scripts/backup-db.js",
     "restore": "node scripts/restore-db.js",
-    "test": "node --test tests/server.test.js tests/chat.test.js tests/api-extended.test.js",
+    "test": "node --test tests/server.test.js tests/chat.test.js tests/api-extended.test.js tests/api-security.test.js",
     "test:browser": "node tests/browser.test.mjs",
     "test:chat": "node tests/chat-browser.test.mjs",
     "test:responsive": "node tests/responsive.test.mjs",

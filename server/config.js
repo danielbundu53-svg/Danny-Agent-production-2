@@ -50,7 +50,16 @@ function readConfig(env = process.env) {
   };
 }
 
-const PLACEHOLDER_KEYS = /^(change-this|put-a-long|your-|example|test-key)/i;
+const PLACEHOLDER_KEYS = /^(change-this|put-a-long|your-|example|test-key|AdminDanny|AgentDanny|admin|password|default)/i;
+const KNOWN_DEFAULT_KEYS = [
+  'AdminDanny2026!SecureKey',
+  'AgentDanny2026!',
+  'admin',
+  'password',
+  'dannyagent',
+  '12345678',
+  'secret'
+];
 
 /* Returns problems that must stop a production server, and warnings that should not. */
 function validateConfig(config) {
@@ -59,8 +68,8 @@ function validateConfig(config) {
 
   if (!config.adminKey) {
     (config.isProd ? errors : warnings).push('ADMIN_KEY is not set. The admin page and API stay locked until you set it in .env.');
-  } else if (PLACEHOLDER_KEYS.test(config.adminKey)) {
-    (config.isProd ? errors : warnings).push('ADMIN_KEY is still a placeholder. Replace it with a long random value.');
+  } else if (KNOWN_DEFAULT_KEYS.some(k => k.toLowerCase() === config.adminKey.toLowerCase()) || PLACEHOLDER_KEYS.test(config.adminKey)) {
+    (config.isProd ? errors : warnings).push('ADMIN_KEY is a known default or placeholder. A secure, unique random key of at least 24 characters is required in production.');
   } else if (config.adminKey.length < 24) {
     (config.isProd ? errors : warnings).push('ADMIN_KEY is too short. Use at least 24 random characters.');
   }

@@ -102,7 +102,26 @@ function showSignedIn(isIn) {
     el.classList.toggle('hidden', !isRealAdmin);
   });
 
+  if (isIn) {
+    checkMustChangePassword();
+  }
+
   if (window.drawIcons) window.drawIcons();
+}
+
+function checkMustChangePassword() {
+  const modal = document.getElementById('firstLoginModal');
+  const tabsNav = document.getElementById('adminTabs');
+  const contentPanels = document.querySelectorAll('.tab-panel');
+  if (currentUser && currentUser.mustChangePassword) {
+    modal?.classList.remove('hidden');
+    tabsNav?.classList.add('opacity-30', 'pointer-events-none');
+    contentPanels.forEach(p => p.classList.add('opacity-30', 'pointer-events-none'));
+  } else {
+    modal?.classList.add('hidden');
+    tabsNav?.classList.remove('opacity-30', 'pointer-events-none');
+    contentPanels.forEach(p => p.classList.remove('opacity-30', 'pointer-events-none'));
+  }
 }
 
 function signOut(clearMessage = true) {
@@ -1163,6 +1182,49 @@ document.getElementById('propTypeFilter')?.addEventListener('change', renderProp
 document.getElementById('propStatusFilter')?.addEventListener('change', renderProperties);
 
 document.getElementById('customerSearchBox')?.addEventListener('input', renderCustomers);
+
+// First-Login Password Change Form
+const firstLoginForm = document.getElementById('firstLoginForm');
+firstLoginForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const currentPassword = document.getElementById('firstLoginCurrent').value;
+  const newPassword = document.getElementById('firstLoginNew').value;
+  const confirmPassword = document.getElementById('firstLoginConfirm').value;
+  const errEl = document.getElementById('firstLoginError');
+  errEl.classList.add('hidden');
+
+  if (newPassword !== confirmPassword) {
+    errEl.textContent = 'New passwords do not match.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  if (newPassword.length < 10) {
+    errEl.textContent = 'New password must be at least 10 characters long.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  try {
+    const res = await fetchWithTimeout('/api/auth/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      errEl.textContent = data.message || 'Failed to update password.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    currentUser.mustChangePassword = false;
+    try { sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(currentUser)); } catch (e) {}
+    checkMustChangePassword();
+    say('Password updated successfully. Full dashboard access granted.', false);
+  } catch (err) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  }
+});
 
 // Initial start: if key or token saved in tab, load immediately
 if (currentKey || currentToken) {
