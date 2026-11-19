@@ -134,6 +134,27 @@ function createAuthService({ db, config, log }) {
         }
         req.user = user;
         req.token = token;
+
+        /* Centrally enforce first-login password change:
+           Users with must_change_password=1 are strictly restricted to:
+           1. Session identity check (/api/auth/me)
+           2. Password change (/api/auth/change-password)
+           3. Logout (/api/auth/logout)
+        */
+        if (user.mustChangePassword) {
+          const path = req.path || '';
+          const url = (req.originalUrl || '').split('?')[0];
+          const isAllowed = path === '/auth/me' ||
+                            path === '/auth/change-password' ||
+                            path === '/auth/logout' ||
+                            url === '/api/auth/me' ||
+                            url === '/api/auth/change-password' ||
+                            url === '/api/auth/logout';
+          if (!isAllowed) {
+            return fail(res, 403, 'PASSWORD_CHANGE_REQUIRED', 'Password change required before accessing dashboard operations.');
+          }
+        }
+
         next();
       }).catch(err => {
         if (log) log.error('auth lookup failed', { error: err.message });

@@ -165,6 +165,25 @@ test('security: successful password change updates credentials and clears mustCh
 /* -------------------------------------------------------------
    4. AGENT RESTRICTIONS & RBAC (403 FORBIDDEN)
    ------------------------------------------------------------- */
+test('security: agent with mustChangePassword=true is blocked from normal operations', async () => {
+  // Operational route blocked before change
+  const resInq = await json('GET', '/api/inquiries', null, agentToken);
+  assert.equal(resInq.status, 403);
+  const data = await resInq.json();
+  assert.equal(data.code, 'PASSWORD_CHANGE_REQUIRED');
+
+  // Allowed routes: /api/auth/me works
+  const meRes = await json('GET', '/api/auth/me', null, agentToken);
+  assert.equal(meRes.status, 200);
+
+  // Agent completes password change
+  const changeRes = await json('POST', '/api/auth/change-password', {
+    currentPassword: 'AgentDanny2026!',
+    newPassword: 'BrandNewAgentPassword2026!'
+  }, agentToken);
+  assert.equal(changeRes.status, 200);
+});
+
 test('security: agent cannot access administrator-only operations (403 FORBIDDEN)', async () => {
   const adminOnlyRoutes = [
     ['GET', '/api/users'],
@@ -180,6 +199,8 @@ test('security: agent cannot access administrator-only operations (403 FORBIDDEN
   for (const [method, route, payload] of adminOnlyRoutes) {
     const res = await json(method, route, payload || null, agentToken);
     assert.equal(res.status, 403, `Expected 403 for agent ${method} ${route}, got ${res.status}`);
+    const data = await res.json();
+    assert.equal(data.code, 'FORBIDDEN');
   }
 });
 
@@ -203,7 +224,7 @@ test('security: agent can access authorized operations (200 OK)', async () => {
    5. LOGOUT & TOKEN INVALIDATION
    ------------------------------------------------------------- */
 test('security: logout invalidates token and prevents reuse', async () => {
-  const tempLogin = await (await json('POST', '/api/auth/login', { username: 'danny.agent', password: 'AgentDanny2026!' })).json();
+  const tempLogin = await (await json('POST', '/api/auth/login', { username: 'danny.agent', password: 'BrandNewAgentPassword2026!' })).json();
   const tempToken = tempLogin.token;
 
   // Verify token works

@@ -94,6 +94,47 @@ test('auth: /api/auth/me returns user profile with valid session token', async (
   assert.equal(data.success, true);
   assert.equal(data.user.username, 'admin');
   assert.equal(data.user.role, 'admin');
+  assert.equal(data.user.mustChangePassword, true);
+});
+
+test('auth: seeded admin must change password before accessing normal operations', async () => {
+  // Attempting operational endpoint before changing password is blocked centrally
+  const blockedRes = await json('GET', '/api/users', null, adminToken);
+  assert.equal(blockedRes.status, 403);
+  const blockedData = await blockedRes.json();
+  assert.equal(blockedData.code, 'PASSWORD_CHANGE_REQUIRED');
+
+  // Perform first-login password change
+  const changeRes = await json('POST', '/api/auth/change-password', {
+    currentPassword: KEY,
+    newPassword: 'BrandNewAdminPassword2026!'
+  }, adminToken);
+  assert.equal(changeRes.status, 200);
+
+  // Now mustChangePassword is false and operations are unlocked
+  const meRes = await json('GET', '/api/auth/me', null, adminToken);
+  assert.equal(meRes.status, 200);
+  const meData = await meRes.json();
+  assert.equal(meData.user.mustChangePassword, false);
+});
+
+test('auth: seeded agent must change password before accessing inquiries', async () => {
+  // Blocked before change
+  const blockedRes = await json('GET', '/api/inquiries', null, agentToken);
+  assert.equal(blockedRes.status, 403);
+  const blockedData = await blockedRes.json();
+  assert.equal(blockedData.code, 'PASSWORD_CHANGE_REQUIRED');
+
+  // Change agent password
+  const changeRes = await json('POST', '/api/auth/change-password', {
+    currentPassword: 'AgentDanny2026!',
+    newPassword: 'BrandNewAgentPassword2026!'
+  }, agentToken);
+  assert.equal(changeRes.status, 200);
+
+  // Inquiries now accessible
+  const inqRes = await json('GET', '/api/inquiries', null, agentToken);
+  assert.equal(inqRes.status, 200);
 });
 
 test('auth: agent cannot access admin-only /api/users endpoint (403 FORBIDDEN)', async () => {
@@ -126,7 +167,7 @@ test('auth: admin can access /api/users and create a new team member', async () 
 });
 
 test('auth: logout revokes session token', async () => {
-  const loginRes = await json('POST', '/api/auth/login', { username: 'danny.agent', password: 'AgentDanny2026!' });
+  const loginRes = await json('POST', '/api/auth/login', { username: 'danny.agent', password: 'BrandNewAgentPassword2026!' });
   const token = (await loginRes.json()).token;
 
   const meBefore = await json('GET', '/api/auth/me', null, token);
